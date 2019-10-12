@@ -22,6 +22,7 @@ public class GameOfLive extends Game {
 	public Skin skin;
 	public OrthographicCamera cam;
 	public Viewport viewport;
+	public static final float UI_SCALE = 2;
 	
 	@Override
 	public void create () {

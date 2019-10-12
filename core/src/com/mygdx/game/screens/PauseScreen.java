@@ -6,40 +6,34 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.mygdx.game.GameOfLive;
+import com.mygdx.game.LiveEngine;
+import javafx.scene.control.Tab;
 
 public class PauseScreen extends ScreenAdapter {
 
     private GameOfLive game;
     private Stage stage;
+    private Table menueTable;
     //ui elements
     private Label bannerLabel;
     private TextButton continueButton;
     private TextButton returnButton;
-    //ui element positions
-    private static final int bannerLabelY = Gdx.graphics.getHeight() - 20;
-    private static final int bannerLabelX = (int)(Gdx.graphics.getWidth() * 0.5f);
-
-    private static final int returnButtonX = (int)(Gdx.graphics.getWidth() * 0.5f) - 100;
-    private static final int returnButtonY = (int)(Gdx.graphics.getHeight() * 0.3);
-
-    private static final int continueButtonX = (int)(Gdx.graphics.getWidth() * 0.5f) + 100;
-    private static final int continueButtonY = (int)(Gdx.graphics.getHeight() * 0.3);
+    private TextButton resetButton;
 
     public PauseScreen(final GameOfLive game) {
         super();
         this.game = game;
-        stage = new Stage();
+        stage = new Stage(game.viewport);
+        menueTable = new Table();
         //create ui elements
-        game.font.setColor(Color.WHITE);
         bannerLabel = new Label("Game Paused", game.skin);
-        bannerLabel.setFontScale(2);
-        bannerLabel.setPosition(bannerLabelX, bannerLabelY);
+        bannerLabel.setFontScale(2*GameOfLive.UI_SCALE);
 
         continueButton = new TextButton("Resume", game.skin);
-        continueButton.setPosition(continueButtonX, continueButtonY);
         continueButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -49,7 +43,6 @@ public class PauseScreen extends ScreenAdapter {
         });
 
         returnButton = new TextButton("Return to Main Menue", game.skin);
-        returnButton.setPosition(returnButtonX, returnButtonY);
         returnButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -57,10 +50,28 @@ public class PauseScreen extends ScreenAdapter {
                 dispose();
             }
         });
+
+        resetButton = new TextButton("Reset", game.skin);
+        resetButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                LiveEngine.getInstance().regenerate();
+                game.setScreen(new SimulationScreen(game));
+                dispose();
+            }
+        });
+
+        menueTable.setDebug(true);
+        menueTable.add(bannerLabel).spaceBottom(100);
+        menueTable.row();
+        menueTable.add(continueButton);
+        menueTable.row();
+        menueTable.add(returnButton).spaceTop(20);
+        menueTable.row();
+        menueTable.add(resetButton).spaceTop(20);
+        menueTable.setFillParent(true);
         //add to stage
-        stage.addActor(bannerLabel);
-        stage.addActor(continueButton);
-        stage.addActor(returnButton);
+        stage.addActor(menueTable);
     }
 
     @Override
@@ -83,6 +94,8 @@ public class PauseScreen extends ScreenAdapter {
     @Override
     public void resize(int width, int height) {
         super.resize(width, height);
+        game.viewport.update(width, height);
+        game.cam.update();
     }
 
     @Override

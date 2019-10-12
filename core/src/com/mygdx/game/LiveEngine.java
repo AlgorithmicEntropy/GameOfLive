@@ -1,9 +1,12 @@
 package com.mygdx.game;
 
 
+import com.mygdx.game.generators.AbstractLiveGenerator;
+
 public class LiveEngine {
 
     private static LiveEngine instance;
+    private AbstractLiveGenerator generator;
     private byte[][] liveArray;
     private int height, width;
 
@@ -27,7 +30,7 @@ public class LiveEngine {
         return liveArray;
     }
 
-    public void setLiveArray(byte[][] liveArray) {
+    private void setLiveArray(byte[][] liveArray) {
         this.liveArray = liveArray;
         this.height = liveArray[0].length;
         this.width = liveArray.length;
@@ -46,7 +49,7 @@ public class LiveEngine {
         liveArray = evoStep(liveArray);
     }
 
-    byte[][] evoStep(byte[][] livearray)
+    private byte[][] evoStep(byte[][] livearray)
     {
         byte[][] copyArray = new byte[width][height];
 
@@ -121,5 +124,14 @@ public class LiveEngine {
         }
 
         return nb;
+    }
+
+    public void regenerate() {
+        setLiveArray(generator.generateLiveArray());
+    }
+
+    public void generate(AbstractLiveGenerator generator) {
+        this.generator = generator;
+        setLiveArray(generator.generateLiveArray());
     }
 }

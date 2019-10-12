@@ -1,12 +1,15 @@
 package com.mygdx.game.screens;
 
-import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.GameOfLive;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
+import com.mygdx.game.LiveEngine;
+import com.mygdx.game.generators.AbstractLiveGenerator;
+import com.mygdx.game.generators.CenteredSquareLiveGenerator;
+import com.mygdx.game.generators.RandomSpreadLiveGenerator;
+import com.mygdx.game.world.GameWorld;
 
 public class MenueScreen extends ScreenAdapter {
 
@@ -67,6 +70,25 @@ public class MenueScreen extends ScreenAdapter {
 
     @Override
     public void show() {
+        super.show();
+        InputMultiplexer inputMultiplexer = new InputMultiplexer();
+
+        InputAdapter inputAdapter = new InputAdapter() {
+            @Override
+            public boolean keyDown(int keycode) {
+                switch (keycode) {
+                    case (Input.Keys.SPACE):
+                        quickStart();
+                        break;
+                    case (Input.Keys.ESCAPE):
+                        Gdx.app.exit();
+                }
+                return super.keyDown(keycode);
+            }
+        };
+
+        inputMultiplexer.addProcessor(inputAdapter);
+        Gdx.input.setInputProcessor(inputMultiplexer);
     }
 
     @Override
@@ -87,5 +109,15 @@ public class MenueScreen extends ScreenAdapter {
     @Override
     public void dispose() {
         super.dispose();
+    }
+
+    private void quickStart() {
+        /*
+        AbstractLiveGenerator generator = new CenteredSquareLiveGenerator(100, 100, 40);
+        LiveEngine engine = LiveEngine.getInstance();
+        engine.generate(generator);
+        game.setScreen(new SimulationScreen(game));
+        */
+        game.setScreen(new WorldEditorScreen(game, new GameWorld(10, 10)));
     }
 }

@@ -15,11 +15,16 @@ public class SimulationScreen extends ScreenAdapter {
     private LiveEngine engine = LiveEngine.getInstance();
     private FrameRate frameRate;
     private Counter nextStateCalcCounter;
+    private boolean isPaused;
+
+    private static final int PAUSE_TEXT_X = Gdx.graphics.getWidth() / 2;
+    private static final int PAUSE_TEXT_Y = Gdx.graphics.getHeight() - 50;
 
     public SimulationScreen(GameOfLive game) {
         this.game = game;
-        //frameRate = new FrameRate();
+        frameRate = new FrameRate();
         nextStateCalcCounter = new Counter(0.1f);
+        isPaused = true;
     }
 
     @Override
@@ -38,7 +43,7 @@ public class SimulationScreen extends ScreenAdapter {
         //get array
         byte[][] array = engine.getLiveArray();
         //advance counter and determine if next state should be calculated
-        if (nextStateCalcCounter.isFinished()) {
+        if (nextStateCalcCounter.isFinished() && !isPaused) {
             engine.calculateNextState();
             nextStateCalcCounter.reset();
         } else {
@@ -61,11 +66,19 @@ public class SimulationScreen extends ScreenAdapter {
                     game.shapeRenderer.rect(x*squareWidth, y*squareHeight, squareWidth, squareHeight);
             }
         }
+        //end shape rendering
         game.shapeRenderer.end();
-
+        //begin batch drawing
+        game.batch.begin();
+        //draw paused text
+        if (isPaused) {
+            game.font.draw(game.batch, "SPACE to start simulation", PAUSE_TEXT_X, PAUSE_TEXT_Y);
+        }
+        //end batch drawing
+        game.batch.end();
         //draw and update frameRate
-        //frameRate.update();
-        //frameRate.render();
+        frameRate.update();
+        frameRate.render();
     }
 
     @Override
@@ -81,9 +94,15 @@ public class SimulationScreen extends ScreenAdapter {
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean keyDown(int keycode) {
-                if (keycode == Input.Keys.ESCAPE) {
-                    game.setScreen(new PauseScreen(game));
+                switch (keycode) {
+                    case (Input.Keys.ESCAPE):
+                        game.setScreen(new PauseScreen(game));
+                        break;
+                    case (Input.Keys.SPACE):
+                        isPaused = !isPaused;
+                        break;
                 }
+
                 return super.keyDown(keycode);
             }
         });
