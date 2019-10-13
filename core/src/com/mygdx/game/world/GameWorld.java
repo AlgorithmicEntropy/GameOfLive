@@ -26,4 +26,12 @@ public class GameWorld {
     public void setLiveArray(byte[][] liveArray) {
         this.liveArray = liveArray;
     }
+
+    public void saveWorld() {
+        //TODO world saving and file handling
+    }
+
+    public void loadWorld(String filePath) {
+        //TODO loading world from file
+    }
 }

@@ -16,6 +16,7 @@ import javafx.scene.control.Tab;
 public class PauseScreen extends ScreenAdapter {
 
     private GameOfLive game;
+    private ScreenAdapter simulationSourceScreen;
     private Stage stage;
     private Table menueTable;
     //ui elements
@@ -24,9 +25,11 @@ public class PauseScreen extends ScreenAdapter {
     private TextButton returnButton;
     private TextButton resetButton;
 
-    public PauseScreen(final GameOfLive game) {
+    public PauseScreen(final GameOfLive game, final ScreenAdapter simulationSourceScreen) {
         super();
+        this.simulationSourceScreen = simulationSourceScreen;
         this.game = game;
+        //ui
         stage = new Stage(game.viewport);
         menueTable = new Table();
         //create ui elements
@@ -37,16 +40,20 @@ public class PauseScreen extends ScreenAdapter {
         continueButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                game.setScreen(new SimulationScreen(game));
+                game.setScreen(new SimulationScreen(game, simulationSourceScreen));
                 dispose();
             }
         });
 
-        returnButton = new TextButton("Return to Main Menue", game.skin);
+        returnButton = new TextButton("Exit", game.skin);
         returnButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                game.setScreen(new MenueScreen(game));
+                if (simulationSourceScreen == null) {
+                    game.setScreen(new MenueScreen(game));
+                } else  {
+                    game.setScreen(simulationSourceScreen);
+                }
                 dispose();
             }
         });
@@ -56,7 +63,7 @@ public class PauseScreen extends ScreenAdapter {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 LiveEngine.getInstance().regenerate();
-                game.setScreen(new SimulationScreen(game));
+                game.setScreen(new SimulationScreen(game, simulationSourceScreen));
                 dispose();
             }
         });
@@ -68,7 +75,9 @@ public class PauseScreen extends ScreenAdapter {
         menueTable.row();
         menueTable.add(returnButton).spaceTop(20);
         menueTable.row();
-        menueTable.add(resetButton).spaceTop(20);
+        if (!LiveEngine.getInstance().isCustomWorld()) {
+            menueTable.add(resetButton).spaceTop(20);
+        }
         menueTable.setFillParent(true);
         //add to stage
         stage.addActor(menueTable);
@@ -108,7 +117,7 @@ public class PauseScreen extends ScreenAdapter {
 
                 switch (keycode) {
                     case (Input.Keys.ESCAPE):
-                        game.setScreen(new SimulationScreen(game));
+                        game.setScreen(new SimulationScreen(game, simulationSourceScreen));
                 }
                 return super.keyDown(keycode);
             }

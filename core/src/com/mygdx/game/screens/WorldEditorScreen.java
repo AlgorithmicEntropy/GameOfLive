@@ -75,14 +75,18 @@ public class WorldEditorScreen extends ScreenAdapter {
             game.cam.unproject(vector);
             int cellX = (int)vector.x / squareSize;
             int cellY = (int)vector.y / squareSize;
-            worldArray[cellX][cellY] = 1;
+            if (cellX >= 0 && cellX < width && cellY >= 0 && cellY < height) {
+                worldArray[cellX][cellY] = 1;
+            }
         }
         if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
             Vector3 vector = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             game.cam.unproject(vector);
             int cellX = (int)vector.x / squareSize;
             int cellY = (int)vector.y / squareSize;
-            worldArray[cellX][cellY] = 0;
+            if (cellX >= 0 && cellX < width && cellY >= 0 && cellY < height) {
+                worldArray[cellX][cellY] = 0;
+            }
         }
         //draw and update frameRate
         frameRate.update();
@@ -97,7 +101,20 @@ public class WorldEditorScreen extends ScreenAdapter {
     @Override
     public void show() {
         super.show();
+        //create input processor
+        final InputAdapter inputAdapter = new InputAdapter() {
+            @Override
+            public boolean keyDown(int keycode) {
+                switch (keycode) {
+                    case (Input.Keys.ESCAPE):
+                        game.setScreen(new WorldEditorMenueScreen(game, world));
+                        break;
+                }
+                return super.keyDown(keycode);
+            }
+        };
         //set input processor
+        Gdx.input.setInputProcessor(inputAdapter);
     }
 
 

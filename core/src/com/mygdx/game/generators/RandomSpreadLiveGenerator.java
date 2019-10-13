@@ -3,6 +3,8 @@ import java.util.Random;
 
 public class RandomSpreadLiveGenerator extends AbstractLiveGenerator {
 
+    private static final String NAME = "Random Generator";
+
     private int fillPercentage;
     private int height, width;
 
@@ -11,6 +13,11 @@ public class RandomSpreadLiveGenerator extends AbstractLiveGenerator {
         this.fillPercentage = fillPercentage;
         this.height = height;
         this.width = width;
+    }
+
+    @Override
+    public String getName() {
+        return NAME;
     }
 
     @Override

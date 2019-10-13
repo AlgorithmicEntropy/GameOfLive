@@ -13,6 +13,7 @@ public class SimulationScreen extends ScreenAdapter {
 
     private GameOfLive game ;
     private LiveEngine engine = LiveEngine.getInstance();
+    private ScreenAdapter simulationSourceScreen;
     private FrameRate frameRate;
     private Counter nextStateCalcCounter;
     private boolean isPaused;
@@ -20,10 +21,12 @@ public class SimulationScreen extends ScreenAdapter {
     private static final int PAUSE_TEXT_X = Gdx.graphics.getWidth() / 2;
     private static final int PAUSE_TEXT_Y = Gdx.graphics.getHeight() - 50;
 
-    public SimulationScreen(GameOfLive game) {
+    public SimulationScreen(GameOfLive game, ScreenAdapter simulationSourceScreen) {
         this.game = game;
+        this.simulationSourceScreen = simulationSourceScreen;
         frameRate = new FrameRate();
         nextStateCalcCounter = new Counter(0.1f);
+        //pause on load
         isPaused = true;
     }
 
@@ -96,7 +99,7 @@ public class SimulationScreen extends ScreenAdapter {
             public boolean keyDown(int keycode) {
                 switch (keycode) {
                     case (Input.Keys.ESCAPE):
-                        game.setScreen(new PauseScreen(game));
+                        game.setScreen(new PauseScreen(game, simulationSourceScreen));
                         break;
                     case (Input.Keys.SPACE):
                         isPaused = !isPaused;
@@ -127,5 +130,9 @@ public class SimulationScreen extends ScreenAdapter {
     @Override
     public void dispose() {
         super.dispose();
+    }
+
+    public ScreenAdapter getSimulationSourceScreen() {
+        return simulationSourceScreen;
     }
 }

@@ -1,8 +1,8 @@
 package com.mygdx.game.generators;
 
-import com.sun.javaws.exceptions.InvalidArgumentException;
-
 public class CenteredSquareLiveGenerator extends AbstractLiveGenerator{
+
+    private static final String NAME = "Square Generator";
 
     private int width, height;
     private int radius;
@@ -15,6 +15,11 @@ public class CenteredSquareLiveGenerator extends AbstractLiveGenerator{
         this.radius = radius;
         this.height = height;
         this.width = width;
+    }
+
+    @Override
+    public String getName() {
+        return NAME;
     }
 
     @Override

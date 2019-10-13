@@ -13,6 +13,7 @@ import com.mygdx.game.GameOfLive;
 import com.mygdx.game.LiveEngine;
 import com.mygdx.game.generators.CenteredSquareLiveGenerator;
 import com.mygdx.game.generators.RandomSpreadLiveGenerator;
+import com.mygdx.game.world.GameWorld;
 
 public class GeneratorSelectionScreen extends ScreenAdapter {
 
@@ -29,6 +30,7 @@ public class GeneratorSelectionScreen extends ScreenAdapter {
     //UI Elements
     private TextButton randomGeneratorButton;
     private TextButton centeredSquareGenButton;
+    private TextButton customWorldGenButton;
     private TextField widthField;
     private TextField heightField;
     private Label heightLabel;
@@ -57,6 +59,14 @@ public class GeneratorSelectionScreen extends ScreenAdapter {
             }
         });
 
+        customWorldGenButton = new TextButton("Custom", game.skin);
+        customWorldGenButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                customGeneration();
+            }
+        });
+
         widthField = new TextField(DEFAULT_GRID_DIMENSION, game.skin);
         heightField = new TextField(DEFAULT_GRID_DIMENSION, game.skin);
         widthLabel = new Label("World Width", game.skin);
@@ -75,6 +85,8 @@ public class GeneratorSelectionScreen extends ScreenAdapter {
         table.row();
         table.add(randomGeneratorButton).spaceTop(100);
         table.add(centeredSquareGenButton).spaceTop(100);
+        table.row();
+        table.add(customWorldGenButton).spaceTop(20);
         table.setFillParent(true);
         //add to stage
         stage.addActor(table);
@@ -159,7 +171,7 @@ public class GeneratorSelectionScreen extends ScreenAdapter {
                     Gdx.app.postRunnable(new Runnable() {
                         @Override
                         public void run() {
-                            game.setScreen(new SimulationScreen(game));
+                            game.setScreen(new SimulationScreen(game, null));
                         }
                     });
                 } catch (NumberFormatException ex) {
@@ -193,7 +205,7 @@ public class GeneratorSelectionScreen extends ScreenAdapter {
                     Gdx.app.postRunnable(new Runnable() {
                         @Override
                         public void run() {
-                            game.setScreen(new SimulationScreen(game));
+                            game.setScreen(new SimulationScreen(game, null));
                         }
                     });
                 } catch (NumberFormatException ex) {
@@ -210,5 +222,25 @@ public class GeneratorSelectionScreen extends ScreenAdapter {
             }
         };
         Gdx.input.getTextInput(listener, "Square Radius", "Enter radius", "");
+    }
+
+    private void customGeneration() {
+        try {
+            final int width = Integer.parseInt(widthField.getText());
+            final int height = Integer.parseInt(heightField.getText());
+
+            //post runnable to draw on correct thread
+            Gdx.app.postRunnable(new Runnable() {
+                @Override
+                public void run() {
+                    game.setScreen(new WorldEditorScreen(game, new GameWorld(width, height)));
+                }
+            });
+        } catch (NumberFormatException ex) {
+            Dialog dialog = new Dialog("Invalid input", game.skin);
+            dialog.button("OK");
+            dialog.show(stage);
+            Gdx.app.log("Exception", "parsing input");
+        }
     }
 }

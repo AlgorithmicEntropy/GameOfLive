@@ -2,11 +2,13 @@ package com.mygdx.game;
 
 
 import com.mygdx.game.generators.AbstractLiveGenerator;
+import com.mygdx.game.world.GameWorld;
 
 public class LiveEngine {
 
     private static LiveEngine instance;
     private AbstractLiveGenerator generator;
+    private GameWorld world;
     private byte[][] liveArray;
     private int height, width;
 
@@ -133,5 +135,20 @@ public class LiveEngine {
     public void generate(AbstractLiveGenerator generator) {
         this.generator = generator;
         setLiveArray(generator.generateLiveArray());
+    }
+
+    public GameWorld getWorld() {
+        return world;
+    }
+
+    public void setWorld(GameWorld world) {
+        this.world = world;
+        setLiveArray(world.getLiveArray());
+    }
+
+    public boolean isCustomWorld() {
+        if (generator == null)
+            return true;
+        return false;
     }
 }
