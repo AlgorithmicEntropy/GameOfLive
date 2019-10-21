@@ -11,17 +11,17 @@ import com.mygdx.game.FrameRate;
 import com.mygdx.game.GameOfLive;
 import com.mygdx.game.world.GameWorld;
 
-public class WorldEditorScreen extends ScreenAdapter {
+public class WorldEditorScreen extends AbstractGameScreen {
 
     private GameOfLive game;
     private GameWorld world;
-    private FrameRate frameRate = new FrameRate();
     private int height;
     private int width;
     private byte[][] worldArray;
     private int squareSize;
 
     public WorldEditorScreen(GameOfLive game, GameWorld world) {
+        super(game);
         this.game = game;
         this.world = world;
         this.height = world.getHeight();
@@ -31,13 +31,11 @@ public class WorldEditorScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        super.render(delta);
-        //update cam
-        game.cam.update();
-        game.batch.setProjectionMatrix(game.cam.combined);
         //clear screen and set colour
         Gdx.gl.glClearColor(0, 0, .25f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        //super
+        super.render(delta);
         //calculate cell dimensions
         int squareHeight = Gdx.graphics.getHeight() / height;
         int squareWidth = Gdx.graphics.getWidth() / width;
@@ -88,9 +86,6 @@ public class WorldEditorScreen extends ScreenAdapter {
                 worldArray[cellX][cellY] = 0;
             }
         }
-        //draw and update frameRate
-        frameRate.update();
-        frameRate.render();
     }
 
     @Override

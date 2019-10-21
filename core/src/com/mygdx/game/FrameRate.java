@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.TimeUtils;
 
@@ -22,13 +23,13 @@ public class FrameRate implements Disposable{
     private OrthographicCamera cam;
 
 
-    public FrameRate() {
+    public FrameRate(GameOfLive game) {
         lastTimeCounted = TimeUtils.millis();
         sinceChange = 0;
         frameRate = Gdx.graphics.getFramesPerSecond();
-        font = new BitmapFont();
-        batch = new SpriteBatch();
-        cam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        font = game.font;
+        batch = game.batch;
+        cam = game.cam;
     }
 
     public void resize(int screenWidth, int screenHeight) {
@@ -51,7 +52,9 @@ public class FrameRate implements Disposable{
 
     public void render() {
         batch.begin();
-        font.draw(batch, (int)frameRate + " fps", 3, Gdx.graphics.getHeight() - 3);
+        Vector3 vector = new Vector3(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), 0);
+        cam.unproject(vector);
+        font.draw(batch, (int)frameRate + " fps", 3, 50);
         batch.end();
     }
 

@@ -6,40 +6,42 @@ import com.badlogic.gdx.graphics.GL20;
 import com.mygdx.game.FrameRate;
 import com.mygdx.game.GameOfLive;
 import com.mygdx.game.LiveEngine;
-import com.mygdx.game.generators.RandomSpreadLiveGenerator;
 import com.mygdx.game.util.Counter;
 
-public class SimulationScreen extends ScreenAdapter {
+public class SimulationScreen extends AbstractGameScreen {
+
+    private static final float DEFAULT_CYCLE_DURATION = 0.1f;
+    private static final int PAUSE_TEXT_X = Gdx.graphics.getWidth() / 2;
+    private static final int PAUSE_TEXT_Y = Gdx.graphics.getHeight() - 50;
+    private static final int SIMULATION_SPEED_Y = Gdx.graphics.getHeight();
+    private static final int SIMULATION_SPEED_X = 50;
 
     private GameOfLive game ;
     private LiveEngine engine = LiveEngine.getInstance();
     private ScreenAdapter simulationSourceScreen;
-    private FrameRate frameRate;
     private Counter nextStateCalcCounter;
     private boolean isPaused;
-
-    private static final int PAUSE_TEXT_X = Gdx.graphics.getWidth() / 2;
-    private static final int PAUSE_TEXT_Y = Gdx.graphics.getHeight() - 50;
+    private float cycleDuration;
 
     public SimulationScreen(GameOfLive game, ScreenAdapter simulationSourceScreen) {
+        super(game);
+
         this.game = game;
         this.simulationSourceScreen = simulationSourceScreen;
-        frameRate = new FrameRate();
         nextStateCalcCounter = new Counter(0.1f);
         //pause on load
         isPaused = true;
+        //set default speed
+        cycleDuration = DEFAULT_CYCLE_DURATION;
     }
 
     @Override
     public void render(float delta) {
-        //super
-        super.render(delta);
-        //update cam
-        game.cam.update();
-        game.batch.setProjectionMatrix(game.cam.combined);
         //clear screen and set colour
         Gdx.gl.glClearColor(0, 0, .25f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        //super
+        super.render(delta);
         //get array dimensions
         int height = engine.getHeight();
         int width = engine.getWidth();
@@ -76,12 +78,12 @@ public class SimulationScreen extends ScreenAdapter {
         //draw paused text
         if (isPaused) {
             game.font.draw(game.batch, "SPACE to start simulation", PAUSE_TEXT_X, PAUSE_TEXT_Y);
+            //TODO make same size as fps
         }
+        //draw simulation speed
+        game.font.draw(game.batch, "speed: " + cycleDuration + " s", SIMULATION_SPEED_X, SIMULATION_SPEED_Y);
         //end batch drawing
         game.batch.end();
-        //draw and update frameRate
-        frameRate.update();
-        frameRate.render();
     }
 
     @Override
@@ -134,5 +136,9 @@ public class SimulationScreen extends ScreenAdapter {
 
     public ScreenAdapter getSimulationSourceScreen() {
         return simulationSourceScreen;
+    }
+
+    public void setCycleDuration(float cycleDuration) {
+        this.cycleDuration = cycleDuration;
     }
 }

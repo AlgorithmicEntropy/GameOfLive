@@ -15,7 +15,7 @@ import com.mygdx.game.generators.CenteredSquareLiveGenerator;
 import com.mygdx.game.generators.RandomSpreadLiveGenerator;
 import com.mygdx.game.world.GameWorld;
 
-public class GeneratorSelectionScreen extends ScreenAdapter {
+public class GeneratorSelectionScreen extends AbstractGameScreen {
 
     //constants
     private static final String RANDOM_GEN_BUTTON_TEXT = "Random Spread Generator";
@@ -38,6 +38,9 @@ public class GeneratorSelectionScreen extends ScreenAdapter {
     private Label topBanner;
 
     public GeneratorSelectionScreen(final GameOfLive game) {
+        //super
+        super(game);
+
         this.game = game;
         stage = new Stage();
         table = new Table();
@@ -94,16 +97,11 @@ public class GeneratorSelectionScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        super.render(delta);
         //clear screen and set colour
         Gdx.gl.glClearColor(0, 0, .25f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        //update cam
-        game.cam.update();
-        game.batch.setProjectionMatrix(game.cam.combined);
-
-        game.batch.setTransformMatrix(game.cam.view);
-        game.batch.setProjectionMatrix(game.cam.projection);
+        //super
+        super.render(delta);
         //draw and update stage
         stage.draw();
         stage.act();

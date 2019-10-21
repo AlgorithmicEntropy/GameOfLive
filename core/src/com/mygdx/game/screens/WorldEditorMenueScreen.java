@@ -13,7 +13,7 @@ import com.mygdx.game.GameOfLive;
 import com.mygdx.game.LiveEngine;
 import com.mygdx.game.world.GameWorld;
 
-public class WorldEditorMenueScreen extends ScreenAdapter {
+public class WorldEditorMenueScreen extends AbstractGameScreen {
 
     private GameOfLive game;
     private GameWorld world;
@@ -29,6 +29,9 @@ public class WorldEditorMenueScreen extends ScreenAdapter {
     private Label titelLabel;
 
     public WorldEditorMenueScreen(GameOfLive game, final GameWorld world) {
+        //super
+        super(game);
+
         this.game = game;
         this.world = world;
         //create UI Elements
@@ -86,16 +89,11 @@ public class WorldEditorMenueScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        super.render(delta);
         //clear screen and set colour
         Gdx.gl.glClearColor(0, 0, .25f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        //update cam
-        game.cam.update();
-        game.batch.setProjectionMatrix(game.cam.combined);
-
-        game.batch.setTransformMatrix(game.cam.view);
-        game.batch.setProjectionMatrix(game.cam.projection);
+        //super
+        super.render(delta);
         //draw and update stage
         stage.draw();
         stage.act();
