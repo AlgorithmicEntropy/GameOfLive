@@ -52,9 +52,7 @@ public class FrameRate implements Disposable{
 
     public void render() {
         batch.begin();
-        Vector3 vector = new Vector3(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), 0);
-        cam.unproject(vector);
-        font.draw(batch, (int)frameRate + " fps", 3, 50);
+        font.draw(batch, (int)frameRate + " fps", 3, Gdx.graphics.getHeight() - 3);
         batch.end();
     }
 

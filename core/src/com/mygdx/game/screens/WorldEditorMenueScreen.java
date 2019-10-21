@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.mygdx.game.GameOfLive;
 import com.mygdx.game.LiveEngine;
 import com.mygdx.game.world.GameWorld;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class WorldEditorMenueScreen extends AbstractGameScreen {
 
@@ -149,6 +150,7 @@ public class WorldEditorMenueScreen extends AbstractGameScreen {
     }
 
     private void getFilePathAndLoadWorld(){
+        throw new NotImplementedException();
         //TODO add file handling
     }
 

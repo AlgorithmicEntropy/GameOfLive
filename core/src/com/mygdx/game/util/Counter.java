@@ -21,4 +21,12 @@ public class Counter {
     public void subtract(float value) {
         currentValue -= value;
     }
+
+    public void setDuration(float value) {
+        defaultValue = value;
+    }
+
+    public float getDuration() {
+        return defaultValue;
+    }
 }
