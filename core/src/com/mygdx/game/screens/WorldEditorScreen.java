@@ -31,9 +31,6 @@ public class WorldEditorScreen extends AbstractGameScreen {
 
     @Override
     public void render(float delta) {
-        //clear screen and set colour
-        Gdx.gl.glClearColor(0, 0, .25f, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //super
         super.render(delta);
         //calculate cell dimensions

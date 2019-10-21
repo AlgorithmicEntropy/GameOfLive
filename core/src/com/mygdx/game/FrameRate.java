@@ -8,12 +8,6 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.TimeUtils;
 
-/**
- * A nicer class for showing framerate that doesn't spam the console
- * like Logger.log()
- *
- * @author William Hartman
- */
 public class FrameRate implements Disposable{
     long lastTimeCounted;
     private float sinceChange;
@@ -34,7 +28,7 @@ public class FrameRate implements Disposable{
 
     public void resize(int screenWidth, int screenHeight) {
         cam = new OrthographicCamera(screenWidth, screenHeight);
-        cam.translate(screenWidth / 2, screenHeight / 2);
+        cam.translate(screenWidth / 2f, screenHeight / 2f);
         cam.update();
         batch.setProjectionMatrix(cam.combined);
     }

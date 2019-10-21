@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Align;
 import com.mygdx.game.GameOfLive;
 import com.mygdx.game.LiveEngine;
 import javafx.scene.control.Tab;
@@ -34,7 +35,7 @@ public class PauseScreen extends AbstractGameScreen {
         menueTable = new Table();
         //create ui elements
         bannerLabel = new Label("Game Paused", game.skin);
-        bannerLabel.setFontScale(2*GameOfLive.UI_SCALE);
+        bannerLabel.setFontScale(4);
 
         continueButton = new TextButton("Resume", game.skin);
         continueButton.addListener(new ChangeListener() {
@@ -68,7 +69,8 @@ public class PauseScreen extends AbstractGameScreen {
             }
         });
 
-        //menueTable.setDebug(true);
+        menueTable.align(Align.top);
+        menueTable.padTop(game.settings.getUiTopPadding());
         menueTable.add(bannerLabel).spaceBottom(100);
         menueTable.row();
         menueTable.add(continueButton);
@@ -85,11 +87,10 @@ public class PauseScreen extends AbstractGameScreen {
 
     @Override
     public void render(float delta) {
-        //clear screen and set colour
-        Gdx.gl.glClearColor(0, 0, .25f, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //super
         super.render(delta);
+        //set debug
+        menueTable.setDebug(game.settings.isDebugEnabled());
         //draw and update stage
         stage.draw();
         stage.act();

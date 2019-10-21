@@ -1,6 +1,7 @@
 package com.mygdx.game.screens;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.GameOfLive;
@@ -29,9 +30,6 @@ public class MenueScreen extends AbstractGameScreen {
 
     @Override
     public void render(float delta) {
-        //clear screen and set colour
-        Gdx.gl.glClearColor(0, 0, .25f, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //super
         super.render(delta);
         //draw

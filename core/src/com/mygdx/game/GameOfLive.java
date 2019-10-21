@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.screens.MenueScreen;
+import com.mygdx.game.util.Settings;
 
 import javax.swing.*;
 import java.security.Key;
@@ -22,7 +23,7 @@ public class GameOfLive extends Game {
 	public Skin skin;
 	public OrthographicCamera cam;
 	public Viewport viewport;
-	public static final float UI_SCALE = 2;
+	public Settings settings;
 	
 	@Override
 	public void create () {
@@ -30,6 +31,7 @@ public class GameOfLive extends Game {
 		shapeRenderer = new ShapeRenderer();
         font = new BitmapFont();
         skin = new Skin(Gdx.files.internal("cloud-form-ui.json"));
+        settings = new Settings();
 
         cam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight() * (Gdx.graphics.getHeight() / Gdx.graphics.getWidth()));
         cam.position.set(cam.viewportWidth / 2f, cam.viewportHeight / 2f, 0);

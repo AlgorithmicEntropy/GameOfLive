@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.mygdx.game.GameOfLive;
 import com.mygdx.game.LiveEngine;
 import com.mygdx.game.generators.CenteredSquareLiveGenerator;
@@ -75,9 +76,11 @@ public class GeneratorSelectionScreen extends AbstractGameScreen {
         widthLabel = new Label("World Width", game.skin);
         heightLabel = new Label("World Height", game.skin);
         topBanner = new Label("Choose a generator", game.skin);
-        topBanner.setFontScale(GameOfLive.UI_SCALE);
+        topBanner.setFontScale(4);
 
         //add elements to table
+        table.align(Align.top);
+        table.padTop(game.settings.getUiTopPadding());
         table.add(topBanner).spaceBottom(100);
         table.row();
         table.add(widthLabel).spaceBottom(20);
@@ -97,11 +100,10 @@ public class GeneratorSelectionScreen extends AbstractGameScreen {
 
     @Override
     public void render(float delta) {
-        //clear screen and set colour
-        Gdx.gl.glClearColor(0, 0, .25f, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //super
         super.render(delta);
+        //change debug info
+        table.setDebug(game.settings.isDebugEnabled());
         //draw and update stage
         stage.draw();
         stage.act();

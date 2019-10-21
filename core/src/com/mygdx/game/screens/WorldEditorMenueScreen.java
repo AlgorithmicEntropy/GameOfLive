@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Align;
 import com.mygdx.game.GameOfLive;
 import com.mygdx.game.LiveEngine;
 import com.mygdx.game.world.GameWorld;
@@ -54,7 +55,7 @@ public class WorldEditorMenueScreen extends AbstractGameScreen {
         saveButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                world.saveWorld();
+                save();
             }
         });
 
@@ -75,7 +76,9 @@ public class WorldEditorMenueScreen extends AbstractGameScreen {
         });
 
         //set UI Layout Table
-        table.add(titelLabel).spaceBottom(100);
+        table.align(Align.top);
+        table.padTop(game.settings.getUiTopPadding());
+        table.add(titelLabel).spaceBottom(50);
         table.row();
         table.add(runSimulation).spaceBottom(20);
         table.row();
@@ -90,11 +93,10 @@ public class WorldEditorMenueScreen extends AbstractGameScreen {
 
     @Override
     public void render(float delta) {
-        //clear screen and set colour
-        Gdx.gl.glClearColor(0, 0, .25f, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //super
         super.render(delta);
+        //set debug
+        table.setDebug(game.settings.isDebugEnabled());
         //draw and update stage
         stage.draw();
         stage.act();
@@ -154,6 +156,14 @@ public class WorldEditorMenueScreen extends AbstractGameScreen {
         //TODO add file handling
     }
 
+    private void save() {
+        if (world.getName().equals("NewWorld")) {
+            saveWorldWithNewName();
+        } else {
+            world.saveWorld();
+        }
+    }
+
     private void exit() {
         Dialog dialog = new Dialog("Exit without saving ?", game.skin) {
             protected void result(Object obj) {
@@ -161,14 +171,32 @@ public class WorldEditorMenueScreen extends AbstractGameScreen {
                     game.setScreen(new MenueScreen(game));
                 } else {
                     this.hide();
-                    world.saveWorld();
+                     saveWorldWithNewName();
                 }
             }
         };
+
         dialog.button("Yes", true);
         dialog.button("No", false);
         dialog.key(Input.Keys.ENTER, true);
         dialog.show(stage);
+    }
+
+    private void saveWorldWithNewName() {
+        Input.TextInputListener inputListener = new Input.TextInputListener() {
+            @Override
+            public void input(String text) {
+                world.setName(text);
+                world.saveWorld();
+            }
+
+            @Override
+            public void canceled() {
+                exit();
+            }
+        };
+
+        Gdx.input.getTextInput(inputListener, "Enter world name","", "");
     }
 
     private void runSimulation() {

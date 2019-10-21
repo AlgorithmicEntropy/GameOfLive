@@ -1,6 +1,10 @@
 package com.mygdx.game.screens;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.mygdx.game.FrameRate;
 import com.mygdx.game.GameOfLive;
 
@@ -16,10 +20,19 @@ public abstract class AbstractGameScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
+        //clear screen and set color
+        Color color = game.settings.getBackroundColor();
+        Gdx.gl.glClearColor(color.r, color.g, color.b, color.a);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        //super
         super.render(delta);
         //draw and update frameRate
         frameRate.update();
         frameRate.render();
+        //standard keys for all screens
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) {
+            game.settings.setDebugEnabled(!game.settings.isDebugEnabled());
+        }
     }
 
     @Override
