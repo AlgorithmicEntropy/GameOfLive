@@ -15,13 +15,14 @@ import com.mygdx.game.LiveEngine;
 import com.mygdx.game.generators.CenteredSquareLiveGenerator;
 import com.mygdx.game.generators.RandomSpreadLiveGenerator;
 import com.mygdx.game.world.GameWorld;
+import com.sun.javaws.exceptions.InvalidArgumentException;
 
 public class GeneratorSelectionScreen extends AbstractGameScreen {
 
     //constants
     private static final String RANDOM_GEN_BUTTON_TEXT = "Random Spread Generator";
     private static final String CENTER_SQUARE_GEN_BUTTON_TEXT = "Square Generator";
-    private static final String DEFAULT_GRID_DIMENSION = "100";
+    private static final String DEFAULT_GRID_DIMENSION = "1000";
 
     private GameOfLive game;
     private Stage stage;
@@ -199,6 +200,13 @@ public class GeneratorSelectionScreen extends AbstractGameScreen {
                     int height = Integer.parseInt(heightField.getText());
                     int radius = Integer.parseInt(text);
 
+                    if (width > Gdx.graphics.getWidth() ||
+                        height > Gdx.graphics.getHeight() ||
+                        radius > width || radius > height
+                    ) {
+                        throw new IllegalArgumentException();
+                    }
+
                     CenteredSquareLiveGenerator generator = new CenteredSquareLiveGenerator(width, height, radius);
                     engine.generate(generator);
                     //post runnable to draw on correct thread
@@ -213,6 +221,11 @@ public class GeneratorSelectionScreen extends AbstractGameScreen {
                     dialog.button("OK");
                     dialog.show(stage);
                     Gdx.app.log("Exception", "parsing input");
+                } catch (IllegalArgumentException ex) {
+                    Dialog dialog = new Dialog("Invalid input", game.skin);
+                    dialog.button("OK");
+                    dialog.show(stage);
+                    Gdx.app.log("Exception", "illegal input parameters");
                 }
             }
 

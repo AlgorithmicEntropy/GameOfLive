@@ -1,6 +1,7 @@
 package com.mygdx.game.screens;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.GL20;
 import com.mygdx.game.GameOfLive;
@@ -10,7 +11,7 @@ import com.mygdx.game.util.Counter;
 public class SimulationScreen extends AbstractGameScreen {
 
     private static final float DEFAULT_CYCLE_DURATION = 0.1f;
-    private static final float MIN_CYCLE_DURATION = 0.1f;
+    private static final float MIN_CYCLE_DURATION = 0.0f;
     private static final float MAX_CYCLE_DURATION = 2f;
     private static final float DEFAULT_SPEED_DELTA = 0.1f;
     private static final int PAUSE_TEXT_X = Gdx.graphics.getWidth() / 2;
@@ -54,12 +55,10 @@ public class SimulationScreen extends AbstractGameScreen {
         //calculate cell dimensions
         int squareHeight = Gdx.graphics.getHeight() / height;
         int squareWidth = Gdx.graphics.getWidth() / width;
-
-        game.batch.setTransformMatrix(game.cam.view);
-        game.batch.setProjectionMatrix(game.cam.projection);
         //draw living cells to screen
         game.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        game.shapeRenderer.setColor(0, 1, 0,1);
+        Color color = game.settings.getTileColor();
+        game.shapeRenderer.setColor(color.r, color.g, color.b,color.a);
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)

@@ -15,6 +15,8 @@ import com.mygdx.game.LiveEngine;
 import com.mygdx.game.world.GameWorld;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.nio.file.FileAlreadyExistsException;
+
 public class WorldEditorMenueScreen extends AbstractGameScreen {
 
     private GameOfLive game;
@@ -152,19 +154,25 @@ public class WorldEditorMenueScreen extends AbstractGameScreen {
     }
 
     private void getFilePathAndLoadWorld(){
-        throw new NotImplementedException();
-        //TODO add file handling
+        //get save name
+        //TODO open selection screen
     }
 
     private void save() {
         if (world.getName().equals("NewWorld")) {
             saveWorldWithNewName();
         } else {
-            world.saveWorld();
+            try {
+                world.saveWorld();
+            } catch (FileAlreadyExistsException ex) {
+                saveWorldWithNewName();
+            }
+
         }
     }
 
     private void exit() {
+        //TODO check if file exists --> auto save & exit
         Dialog dialog = new Dialog("Exit without saving ?", game.skin) {
             protected void result(Object obj) {
                 if ((boolean)obj) {
@@ -187,7 +195,7 @@ public class WorldEditorMenueScreen extends AbstractGameScreen {
             @Override
             public void input(String text) {
                 world.setName(text);
-                world.saveWorld();
+                save();
             }
 
             @Override

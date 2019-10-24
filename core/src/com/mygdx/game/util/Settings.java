@@ -8,13 +8,15 @@ public class Settings {
     private boolean isDebugEnabled;
     private Color backroundColor;
     private Color tileColor;
+    private String saveDirectory;
 
     public Settings() {
         //default values
         uiTopPadding = 50;
-        isDebugEnabled = false;
-        backroundColor = Color.BLUE;
-        tileColor = Color.GREEN;
+        isDebugEnabled = true;
+        backroundColor = Color.DARK_GRAY;
+        tileColor = Color.CORAL;
+        saveDirectory = "saves";
     }
 
     public int getUiTopPadding() {
@@ -47,5 +49,9 @@ public class Settings {
 
     public void setTileColor(Color tileColor) {
         this.tileColor = tileColor;
+    }
+
+    public String getSaveDirectory() {
+        return saveDirectory;
     }
 }

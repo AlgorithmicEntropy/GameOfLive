@@ -1,5 +1,12 @@
 package com.mygdx.game.world;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
+
+import java.io.FileNotFoundException;
+import java.nio.file.FileAlreadyExistsException;
+
 public class GameWorld {
 
     private String name;
@@ -37,14 +44,13 @@ public class GameWorld {
         this.liveArray = liveArray;
     }
 
-    public void saveWorld() {
-        //TODO world saving and file handling
+    public void saveWorld() throws FileAlreadyExistsException {
+        FileHandle file = Gdx.files.local("saves/" + name);
+        if (file.exists()) {
+            throw new FileAlreadyExistsException("save file already exists");
+        }
         String worldString = serializeWorld();
-
-    }
-
-    public void loadWorld(String filePath) {
-        //TODO loading world from file
+        file.writeString(worldString, false);
     }
 
     public String getName() {
@@ -60,13 +66,47 @@ public class GameWorld {
         //add header
         stringBuilder.append(name);
         stringBuilder.append(':');
+        //dimensions
+        stringBuilder.append(width);
+        stringBuilder.append(':');
+        stringBuilder.append(height);
+        stringBuilder.append(':');
         //append array serialisation
         for (int x = 0; x < width;x++) {
             for (int y = 0; y < height; y++) {
                 stringBuilder.append(liveArray[x][y]);
             }
         }
-        System.out.println(stringBuilder.toString());
         return stringBuilder.toString();
+    }
+
+    private static GameWorld deserializeWorld(String worldString) {
+        String[] parts = worldString.split(":");
+        String name = parts[0];
+        int width = Integer.parseInt(parts[1]);
+        int height = Integer.parseInt(parts[2]);
+        GameWorld world = new GameWorld(width, height, name);
+        byte[][] array = new byte[width][height];
+        char[] data = parts[3].toCharArray();
+
+        int i = 0;
+        for (int x = 0; x < width;x++) {
+            for (int y = 0; y < height; y++) {
+                array[x][y] = Byte.parseByte(""+data[i]);
+                i++;
+            }
+        }
+        world.setLiveArray(array);
+        return  world;
+    }
+
+    public static GameWorld loadWorldFromSaves(String name) throws FileNotFoundException {
+        FileHandle file = Gdx.files.local("saves/" + name);
+        if (!file.exists()) {
+            throw new FileNotFoundException("save file not found");
+        }
+        String content = file.readString();
+        //deserialize
+        return deserializeWorld(content);
     }
 }

@@ -32,6 +32,7 @@ public class MenueScreen extends AbstractGameScreen {
     public void render(float delta) {
         //super
         super.render(delta);
+        //TODO add load world button
         //draw
         game.batch.begin();
         game.batch.draw(startNewSimulation, startNewX, START_NEW_Y );
@@ -107,6 +108,9 @@ public class MenueScreen extends AbstractGameScreen {
         engine.generate(generator);
         game.setScreen(new SimulationScreen(game));
         */
+        /*
         game.setScreen(new WorldEditorScreen(game, new GameWorld(10, 10)));
+        */
+        game.setScreen(new SavedWorldsSelectionScreen(game));
     }
 }
