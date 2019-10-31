@@ -63,9 +63,15 @@ public class PauseScreen extends AbstractGameScreen {
         resetButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                LiveEngine.getInstance().regenerate();
-                game.setScreen(new SimulationScreen(game, simulationSourceScreen));
-                dispose();
+                if (!LiveEngine.getInstance().isCustomWorld()) {
+                    LiveEngine.getInstance().regenerate();
+                    game.setScreen(new SimulationScreen(game, simulationSourceScreen));
+                    dispose();
+                } else {
+                    LiveEngine.getInstance().reloadWorld();
+                    game.setScreen(new SimulationScreen(game, simulationSourceScreen));
+                    dispose();
+                }
             }
         });
 
@@ -77,9 +83,7 @@ public class PauseScreen extends AbstractGameScreen {
         menueTable.row();
         menueTable.add(returnButton).spaceTop(20);
         menueTable.row();
-        if (!LiveEngine.getInstance().isCustomWorld()) {
-            menueTable.add(resetButton).spaceTop(20);
-        }
+        menueTable.add(resetButton).spaceTop(20);
         menueTable.setFillParent(true);
         //add to stage
         stage.addActor(menueTable);

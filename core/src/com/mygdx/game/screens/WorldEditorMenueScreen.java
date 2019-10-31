@@ -69,7 +69,7 @@ public class WorldEditorMenueScreen extends AbstractGameScreen {
             }
         });
 
-        exitButton = new TextButton("Exit", game.skin);
+        exitButton = new TextButton("Save / Exit", game.skin);
         exitButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -154,8 +154,7 @@ public class WorldEditorMenueScreen extends AbstractGameScreen {
     }
 
     private void getFilePathAndLoadWorld(){
-        //get save name
-        //TODO open selection screen
+        game.setScreen(new SavedWorldsSelectionScreen(game, false));
     }
 
     private void save() {
@@ -165,6 +164,7 @@ public class WorldEditorMenueScreen extends AbstractGameScreen {
             try {
                 world.saveWorld();
             } catch (FileAlreadyExistsException ex) {
+                //TODO ask for overwrite world
                 saveWorldWithNewName();
             }
 
@@ -172,7 +172,10 @@ public class WorldEditorMenueScreen extends AbstractGameScreen {
     }
 
     private void exit() {
-        //TODO check if file exists --> auto save & exit
+        boolean wasSaved = world.saveIfExistsWorld();
+        if (wasSaved)
+            return;
+        //dialog
         Dialog dialog = new Dialog("Exit without saving ?", game.skin) {
             protected void result(Object obj) {
                 if ((boolean)obj) {

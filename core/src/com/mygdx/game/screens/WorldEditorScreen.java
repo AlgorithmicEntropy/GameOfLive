@@ -11,7 +11,7 @@ import com.mygdx.game.FrameRate;
 import com.mygdx.game.GameOfLive;
 import com.mygdx.game.world.GameWorld;
 
-public class WorldEditorScreen extends AbstractGameScreen {
+public class WorldEditorScreen extends AbstractZoomableScreen {
 
     private GameOfLive game;
     private GameWorld world;
@@ -19,6 +19,9 @@ public class WorldEditorScreen extends AbstractGameScreen {
     private int width;
     private byte[][] worldArray;
     private int squareSize;
+
+    //global vector to reduce gc pressure
+    private Vector3 vector3 = new Vector3();
 
     public WorldEditorScreen(GameOfLive game, GameWorld world) {
         super(game);
@@ -39,7 +42,7 @@ public class WorldEditorScreen extends AbstractGameScreen {
         squareSize = squareHeight;
         //draw living cells to screen
         game.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        game.shapeRenderer.setColor(0, 1, 0,1);
+        game.shapeRenderer.setColor(game.settings.getTileColor());
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
@@ -66,19 +69,19 @@ public class WorldEditorScreen extends AbstractGameScreen {
         game.shapeRenderer.end();
         //click handeling
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-            Vector3 vector = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-            game.cam.unproject(vector);
-            int cellX = (int)vector.x / squareSize;
-            int cellY = (int)vector.y / squareSize;
+            vector3.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+            game.cam.unproject(vector3);
+            int cellX = (int)vector3.x / squareSize;
+            int cellY = (int)vector3.y / squareSize;
             if (cellX >= 0 && cellX < width && cellY >= 0 && cellY < height) {
                 worldArray[cellX][cellY] = 1;
             }
         }
         if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
-            Vector3 vector = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-            game.cam.unproject(vector);
-            int cellX = (int)vector.x / squareSize;
-            int cellY = (int)vector.y / squareSize;
+            vector3.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+            game.cam.unproject(vector3);
+            int cellX = (int)vector3.x / squareSize;
+            int cellY = (int)vector3.y / squareSize;
             if (cellX >= 0 && cellX < width && cellY >= 0 && cellY < height) {
                 worldArray[cellX][cellY] = 0;
             }
@@ -106,9 +109,8 @@ public class WorldEditorScreen extends AbstractGameScreen {
             }
         };
         //set input processor
-        Gdx.input.setInputProcessor(inputAdapter);
+        super.inputMultiplexer.addProcessor(inputAdapter);
     }
-
 
     @Override
     public void hide() {

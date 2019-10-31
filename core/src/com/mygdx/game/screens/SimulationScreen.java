@@ -18,6 +18,8 @@ public class SimulationScreen extends AbstractGameScreen {
     private static final int PAUSE_TEXT_Y = Gdx.graphics.getHeight() - 50;
     private static final int SIMULATION_SPEED_Y = Gdx.graphics.getHeight() - 3;
     private static final int SIMULATION_SPEED_X = 50;
+    private static final int SIMULATION_COUNTER_Y = Gdx.graphics.getHeight() - 3;
+    private static final int SIMULATION_COUNTER_X = 140;
 
     private GameOfLive game ;
     private LiveEngine engine = LiveEngine.getInstance();
@@ -77,8 +79,11 @@ public class SimulationScreen extends AbstractGameScreen {
         }
         //draw simulation speed
         game.font.draw(game.batch, "speed: " + nextStateCalcCounter.getDuration() + " s", SIMULATION_SPEED_X, SIMULATION_SPEED_Y);
+        game.font.draw(game.batch, "cycle: " + engine.getCycleCounter(), SIMULATION_COUNTER_X, SIMULATION_COUNTER_Y);
         //end batch drawing
         game.batch.end();
+        //fps
+        super.drawFPS();
     }
 
     @Override

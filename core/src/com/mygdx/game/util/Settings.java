@@ -4,16 +4,24 @@ import com.badlogic.gdx.graphics.Color;
 
 public class Settings {
 
+    private static Settings instance;
+
     private int uiTopPadding;
     private boolean isDebugEnabled;
     private Color backroundColor;
     private Color tileColor;
     private String saveDirectory;
 
-    public Settings() {
+    public static Settings getInstance() {
+        if (instance != null)
+            return instance;
+        return new Settings();
+    }
+
+    private Settings() {
         //default values
         uiTopPadding = 50;
-        isDebugEnabled = true;
+        isDebugEnabled = false;
         backroundColor = Color.DARK_GRAY;
         tileColor = Color.CORAL;
         saveDirectory = "saves";

@@ -11,6 +11,7 @@ public class LiveEngine {
     private GameWorld world;
     private byte[][] liveArray;
     private int height, width;
+    private long cycleCounter;
 
     private LiveEngine() {
 
@@ -53,6 +54,9 @@ public class LiveEngine {
 
     private byte[][] evoStep(byte[][] livearray)
     {
+        //cycle counter
+        cycleCounter++;
+        //temp array
         byte[][] copyArray = new byte[width][height];
 
         for(int y = 0; y < height; y++)
@@ -130,11 +134,13 @@ public class LiveEngine {
 
     public void regenerate() {
         setLiveArray(generator.generateLiveArray());
+        cycleCounter = 0;
     }
 
     public void generate(AbstractLiveGenerator generator) {
         this.generator = generator;
         setLiveArray(generator.generateLiveArray());
+        cycleCounter = 0;
     }
 
     public GameWorld getWorld() {
@@ -146,9 +152,18 @@ public class LiveEngine {
         setLiveArray(world.getLiveArray());
     }
 
+    public void reloadWorld() {
+        liveArray = world.getLiveArray();
+        cycleCounter = 0;
+    }
+
     public boolean isCustomWorld() {
         if (generator == null)
             return true;
         return false;
+    }
+
+    public long getCycleCounter() {
+        return cycleCounter;
     }
 }

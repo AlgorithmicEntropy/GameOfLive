@@ -20,15 +20,16 @@ public abstract class AbstractGameScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
+        //update cam
+        game.cam.update();
+        game.batch.setProjectionMatrix(game.cam.combined);
+        game.shapeRenderer.setProjectionMatrix(game.cam.combined);
         //clear screen and set color
         Color color = game.settings.getBackroundColor();
         Gdx.gl.glClearColor(color.r, color.g, color.b, color.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //super
         super.render(delta);
-        //draw and update frameRate
-        frameRate.update();
-        frameRate.render();
         //standard keys for all screens
         if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) {
             game.settings.setDebugEnabled(!game.settings.isDebugEnabled());
@@ -69,5 +70,11 @@ public abstract class AbstractGameScreen extends ScreenAdapter {
     @Override
     public void dispose() {
         super.dispose();
+    }
+
+    public void drawFPS() {
+        //draw and update frameRate
+        frameRate.update();
+        frameRate.render();
     }
 }

@@ -17,6 +17,7 @@ import java.util.HashMap;
 public class SavedWorldsSelectionScreen extends AbstractGameScreen {
 
     private GameOfLive game;
+    private boolean isSimulationMode;
 
     private HashMap<String, GameWorld> gameWorldDictionary = new HashMap<>();
     //UI Elements
@@ -27,8 +28,9 @@ public class SavedWorldsSelectionScreen extends AbstractGameScreen {
     private ScrollPane scrollPane;
     private Stack stack;
 
-    public SavedWorldsSelectionScreen(GameOfLive game) {
+    public SavedWorldsSelectionScreen(GameOfLive game, boolean simulationMode) {
         super(game);
+        this.isSimulationMode = simulationMode;
         this.game = game;
         //load saved worlds
         FileHandle[] savedFiles = Gdx.files.local(game.settings.getSaveDirectory()).list();
@@ -144,7 +146,11 @@ public class SavedWorldsSelectionScreen extends AbstractGameScreen {
     }
 
     private void loadWorld(GameWorld world) {
-        LiveEngine.getInstance().setWorld(world);
-        game.setScreen(new SimulationScreen(game, this));
+        if (isSimulationMode) {
+            LiveEngine.getInstance().setWorld(world);
+            game.setScreen(new SimulationScreen(game, this));
+        } else {
+            game.setScreen(new WorldEditorScreen(game, world));
+        }
     }
 }

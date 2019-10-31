@@ -2,7 +2,7 @@ package com.mygdx.game.world;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
+import com.mygdx.game.util.Settings;
 
 import java.io.FileNotFoundException;
 import java.nio.file.FileAlreadyExistsException;
@@ -45,12 +45,22 @@ public class GameWorld {
     }
 
     public void saveWorld() throws FileAlreadyExistsException {
-        FileHandle file = Gdx.files.local("saves/" + name);
+        FileHandle file = Gdx.files.local(Settings.getInstance().getSaveDirectory() +"/" + name);
         if (file.exists()) {
             throw new FileAlreadyExistsException("save file already exists");
         }
         String worldString = serializeWorld();
         file.writeString(worldString, false);
+    }
+
+    public boolean saveIfExistsWorld() {
+        FileHandle file = Gdx.files.local(Settings.getInstance().getSaveDirectory() + "/" + name);
+        if (file.exists()) {
+            String worldString = serializeWorld();
+            file.writeString(worldString, false);
+            return true;
+        }
+        return false;
     }
 
     public String getName() {
@@ -101,7 +111,7 @@ public class GameWorld {
     }
 
     public static GameWorld loadWorldFromSaves(String name) throws FileNotFoundException {
-        FileHandle file = Gdx.files.local("saves/" + name);
+        FileHandle file = Gdx.files.local(Settings.getInstance().getSaveDirectory() + "/" + name);
         if (!file.exists()) {
             throw new FileNotFoundException("save file not found");
         }
