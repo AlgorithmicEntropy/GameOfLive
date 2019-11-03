@@ -1,7 +1,6 @@
 package com.mygdx.game.screens;
 
 import com.badlogic.gdx.*;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
@@ -13,7 +12,6 @@ import com.badlogic.gdx.utils.Align;
 import com.mygdx.game.GameOfLive;
 import com.mygdx.game.LiveEngine;
 import com.mygdx.game.world.GameWorld;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.nio.file.FileAlreadyExistsException;
 
@@ -28,7 +26,8 @@ public class WorldEditorMenueScreen extends AbstractGameScreen {
     private TextButton saveButton;
     private TextButton loadButton;
     private TextButton exitButton;
-    private TextButton runSimulation;
+    private TextButton runSimulationButton;
+    private TextButton clearAllButton;
 
     private Label titelLabel;
 
@@ -45,8 +44,8 @@ public class WorldEditorMenueScreen extends AbstractGameScreen {
         titelLabel = new Label("Editor Menue Screen", game.skin);
         titelLabel.setFontScale(2);
 
-        runSimulation = new TextButton("Run Simulation", game.skin);
-        runSimulation.addListener(new ChangeListener() {
+        runSimulationButton = new TextButton("Run Simulation", game.skin);
+        runSimulationButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 runSimulation();
@@ -77,12 +76,22 @@ public class WorldEditorMenueScreen extends AbstractGameScreen {
             }
         });
 
+        clearAllButton = new TextButton("Clear all", game.skin);
+        clearAllButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                clearAll();
+            }
+        });
+
         //set UI Layout Table
         table.align(Align.top);
         table.padTop(game.settings.getUiTopPadding());
         table.add(titelLabel).spaceBottom(50);
         table.row();
-        table.add(runSimulation).spaceBottom(20);
+        table.add(runSimulationButton).spaceBottom(20);
+        table.row();
+        table.add(clearAllButton).spaceBottom(20);
         table.row();
         table.add(saveButton).spaceBottom(20);
         table.row();
@@ -173,8 +182,11 @@ public class WorldEditorMenueScreen extends AbstractGameScreen {
 
     private void exit() {
         boolean wasSaved = world.saveIfExistsWorld();
-        if (wasSaved)
+        if (wasSaved) {
+            game.setScreen(new MenueScreen(game));
             return;
+        }
+
         //dialog
         Dialog dialog = new Dialog("Exit without saving ?", game.skin) {
             protected void result(Object obj) {
@@ -213,5 +225,9 @@ public class WorldEditorMenueScreen extends AbstractGameScreen {
     private void runSimulation() {
         LiveEngine.getInstance().setWorld(world);
         game.setScreen(new SimulationScreen(game, this));
+    }
+
+    private void clearAll() {
+        world.clear();
     }
 }

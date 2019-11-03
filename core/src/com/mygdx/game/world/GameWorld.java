@@ -119,4 +119,8 @@ public class GameWorld {
         //deserialize
         return deserializeWorld(content);
     }
+
+    public void clear() {
+        liveArray = new byte[width][height];
+    }
 }
