@@ -1,8 +1,6 @@
 package com.mygdx.game.screens;
 
 import com.badlogic.gdx.*;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -12,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.mygdx.game.GameOfLive;
 import com.mygdx.game.LiveEngine;
-import javafx.scene.control.Tab;
+import com.mygdx.game.util.Settings;
 
 public class PauseScreen extends AbstractGameScreen {
 
@@ -26,7 +24,7 @@ public class PauseScreen extends AbstractGameScreen {
     private TextButton returnButton;
     private TextButton resetButton;
 
-    public PauseScreen(final GameOfLive game, final ScreenAdapter simulationSourceScreen) {
+    PauseScreen(final GameOfLive game, final ScreenAdapter simulationSourceScreen) {
         super(game);
         this.simulationSourceScreen = simulationSourceScreen;
         this.game = game;
@@ -51,7 +49,7 @@ public class PauseScreen extends AbstractGameScreen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 if (simulationSourceScreen == null) {
-                    game.setScreen(new MenueScreen(game));
+                    game.setScreen(new MenuScreen(game));
                 } else  {
                     game.setScreen(simulationSourceScreen);
                 }
@@ -76,7 +74,7 @@ public class PauseScreen extends AbstractGameScreen {
         });
 
         menueTable.align(Align.top);
-        menueTable.padTop(game.settings.getUiTopPadding());
+        menueTable.padTop(Settings.getUiTopPadding());
         menueTable.add(bannerLabel).spaceBottom(100);
         menueTable.row();
         menueTable.add(continueButton);

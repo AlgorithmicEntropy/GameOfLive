@@ -11,11 +11,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.mygdx.game.GameOfLive;
 import com.mygdx.game.LiveEngine;
+import com.mygdx.game.util.Settings;
 import com.mygdx.game.world.GameWorld;
 
 import java.nio.file.FileAlreadyExistsException;
 
-public class WorldEditorMenueScreen extends AbstractGameScreen {
+public class WorldEditorMenuScreen extends AbstractGameScreen {
 
     private GameOfLive game;
     private GameWorld world;
@@ -31,7 +32,7 @@ public class WorldEditorMenueScreen extends AbstractGameScreen {
 
     private Label titelLabel;
 
-    public WorldEditorMenueScreen(GameOfLive game, final GameWorld world) {
+    WorldEditorMenuScreen(GameOfLive game, final GameWorld world) {
         //super
         super(game);
 
@@ -86,7 +87,7 @@ public class WorldEditorMenueScreen extends AbstractGameScreen {
 
         //set UI Layout Table
         table.align(Align.top);
-        table.padTop(game.settings.getUiTopPadding());
+        table.padTop(Settings.getUiTopPadding());
         table.add(titelLabel).spaceBottom(50);
         table.row();
         table.add(runSimulationButton).spaceBottom(20);
@@ -173,8 +174,7 @@ public class WorldEditorMenueScreen extends AbstractGameScreen {
             try {
                 world.saveWorld();
             } catch (FileAlreadyExistsException ex) {
-                //TODO ask for overwrite world
-                saveWorldWithNewName();
+                //overwrite
             }
 
         }
@@ -183,7 +183,7 @@ public class WorldEditorMenueScreen extends AbstractGameScreen {
     private void exit() {
         boolean wasSaved = world.saveIfExistsWorld();
         if (wasSaved) {
-            game.setScreen(new MenueScreen(game));
+            game.setScreen(new MenuScreen(game));
             return;
         }
 
@@ -191,7 +191,7 @@ public class WorldEditorMenueScreen extends AbstractGameScreen {
         Dialog dialog = new Dialog("Exit without saving ?", game.skin) {
             protected void result(Object obj) {
                 if ((boolean)obj) {
-                    game.setScreen(new MenueScreen(game));
+                    game.setScreen(new MenuScreen(game));
                 } else {
                     this.hide();
                      saveWorldWithNewName();

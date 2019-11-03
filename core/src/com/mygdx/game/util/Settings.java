@@ -5,10 +5,11 @@ import com.badlogic.gdx.graphics.Color;
 public class Settings {
 
     private static Settings instance;
-
-    private int uiTopPadding;
+    //static internal constants
+    private static final int UI_TOP_PADDING = 50;
+    private static final int UI_BUTTON_SIDE_PADDING = 20;
     private boolean isDebugEnabled;
-    private Color backroundColor;
+    private Color backgroundColor;
     private Color tileColor;
     private String saveDirectory;
 
@@ -20,19 +21,18 @@ public class Settings {
 
     private Settings() {
         //default values
-        uiTopPadding = 50;
         isDebugEnabled = false;
-        backroundColor = Color.DARK_GRAY;
+        backgroundColor = Color.DARK_GRAY;
         tileColor = Color.CORAL;
         saveDirectory = "saves";
     }
 
-    public int getUiTopPadding() {
-        return uiTopPadding;
+    public static int getUiTopPadding() {
+        return UI_TOP_PADDING;
     }
 
-    public void setUiTopPadding(int uiTopPadding) {
-        this.uiTopPadding = uiTopPadding;
+    public static int getUiButtonSidePadding() {
+        return UI_BUTTON_SIDE_PADDING;
     }
 
     public boolean isDebugEnabled() {
@@ -43,12 +43,12 @@ public class Settings {
         isDebugEnabled = debugEnabled;
     }
 
-    public Color getBackroundColor() {
-        return backroundColor;
+    public Color getBackgroundColor() {
+        return backgroundColor;
     }
 
-    public void setBackroundColor(Color backroundColor) {
-        this.backroundColor = backroundColor;
+    public void setBackgroundColor(Color backgroundColor) {
+        this.backgroundColor = backgroundColor;
     }
 
     public Color getTileColor() {

@@ -1,5 +1,9 @@
 package com.mygdx.game.screens;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.mygdx.game.GameOfLive;
@@ -12,7 +16,7 @@ public class SettingsScreen extends AbstractGameScreen {
     //TODO add settings screen
     private GameOfLive game;
 
-    public SettingsScreen(GameOfLive game) {
+    SettingsScreen(GameOfLive game) {
         super(game);
         this.game = game;
     }
@@ -30,11 +34,26 @@ public class SettingsScreen extends AbstractGameScreen {
     @Override
     public void show() {
         super.show();
+        InputMultiplexer inputMultiplexer = new InputMultiplexer();
+        InputAdapter inputAdapter = new InputAdapter() {
+            @Override
+            public boolean keyDown(int keycode) {
+                switch (keycode) {
+                    case (Input.Keys.ESCAPE):
+                        game.setScreen(new MenuScreen(game));
+                        break;
+                }
+                return super.keyDown(keycode);
+            }
+        };
+        inputMultiplexer.addProcessor(inputAdapter);
+        Gdx.input.setInputProcessor(inputMultiplexer);
     }
 
     @Override
     public void hide() {
         super.hide();
+        Gdx.input.setInputProcessor(null);
     }
 
     @Override

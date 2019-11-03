@@ -3,19 +3,14 @@ package com.mygdx.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.mygdx.game.screens.MenueScreen;
+import com.mygdx.game.screens.MenuScreen;
 import com.mygdx.game.util.Settings;
-
-import javax.swing.*;
-import java.security.Key;
-import java.util.Set;
 
 public class GameOfLive extends Game {
 	public SpriteBatch batch;
@@ -41,7 +36,7 @@ public class GameOfLive extends Game {
 
         viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), cam);
 
-        setScreen(new MenueScreen(this));
+        setScreen(new MenuScreen(this));
 	}
 	
 	@Override

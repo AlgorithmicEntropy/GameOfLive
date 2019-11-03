@@ -13,7 +13,7 @@ public abstract class AbstractGameScreen extends ScreenAdapter {
     private GameOfLive game;
     private FrameRate frameRate;
 
-    public AbstractGameScreen(GameOfLive game) {
+    AbstractGameScreen(GameOfLive game) {
         this.game = game;
         this.frameRate = new FrameRate(game);
     }
@@ -25,7 +25,7 @@ public abstract class AbstractGameScreen extends ScreenAdapter {
         game.batch.setProjectionMatrix(game.cam.combined);
         game.shapeRenderer.setProjectionMatrix(game.cam.combined);
         //clear screen and set color
-        Color color = game.settings.getBackroundColor();
+        Color color = game.settings.getBackgroundColor();
         Gdx.gl.glClearColor(color.r, color.g, color.b, color.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //super
@@ -72,7 +72,7 @@ public abstract class AbstractGameScreen extends ScreenAdapter {
         super.dispose();
     }
 
-    public void drawFPS() {
+    void drawFPS() {
         //draw and update frameRate
         frameRate.update();
         frameRate.render();

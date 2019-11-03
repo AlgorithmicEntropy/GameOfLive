@@ -1,21 +1,17 @@
 package com.mygdx.game.screens;
 
 import com.badlogic.gdx.*;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.mygdx.game.GameOfLive;
 import com.mygdx.game.LiveEngine;
 import com.mygdx.game.generators.CenteredSquareLiveGenerator;
 import com.mygdx.game.generators.RandomSpreadLiveGenerator;
+import com.mygdx.game.util.Settings;
 import com.mygdx.game.world.GameWorld;
-import com.sun.javaws.exceptions.InvalidArgumentException;
 
 public class GeneratorSelectionScreen extends AbstractGameScreen {
 
@@ -39,7 +35,7 @@ public class GeneratorSelectionScreen extends AbstractGameScreen {
     private Label widthLabel;
     private Label topBanner;
 
-    public GeneratorSelectionScreen(final GameOfLive game) {
+    GeneratorSelectionScreen(final GameOfLive game) {
         //super
         super(game);
 
@@ -81,8 +77,10 @@ public class GeneratorSelectionScreen extends AbstractGameScreen {
 
         //add elements to table
         table.align(Align.top);
-        table.padTop(game.settings.getUiTopPadding());
-        table.add(topBanner).spaceBottom(100);
+        table.columnDefaults(2);
+        table.padTop(Settings.getUiTopPadding());
+        //TODO proper banner screen label
+        table.add(topBanner).spaceBottom(100).colspan(2);
         table.row();
         table.add(widthLabel).spaceBottom(20);
         table.add(widthField).spaceBottom(20);
@@ -93,7 +91,7 @@ public class GeneratorSelectionScreen extends AbstractGameScreen {
         table.add(randomGeneratorButton).spaceTop(100);
         table.add(centeredSquareGenButton).spaceTop(100);
         table.row();
-        table.add(customWorldGenButton).spaceTop(20);
+        table.add(customWorldGenButton).spaceTop(20).colspan(2);
         table.setFillParent(true);
         //add to stage
         stage.addActor(table);
@@ -124,7 +122,7 @@ public class GeneratorSelectionScreen extends AbstractGameScreen {
             public boolean keyDown(int keycode) {
                 switch (keycode) {
                     case (Input.Keys.ESCAPE):
-                        game.setScreen(new MenueScreen(game));
+                        game.setScreen(new MenuScreen(game));
                         dispose();
                 }
                 return super.keyDown(keycode);

@@ -3,11 +3,8 @@ package com.mygdx.game.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
-import com.mygdx.game.FrameRate;
 import com.mygdx.game.GameOfLive;
 import com.mygdx.game.world.GameWorld;
 
@@ -23,7 +20,7 @@ public class WorldEditorScreen extends AbstractZoomableScreen {
     //global vector to reduce gc pressure
     private Vector3 vector3 = new Vector3();
 
-    public WorldEditorScreen(GameOfLive game, GameWorld world) {
+    WorldEditorScreen(GameOfLive game, GameWorld world) {
         super(game);
         this.game = game;
         this.world = world;
@@ -102,7 +99,7 @@ public class WorldEditorScreen extends AbstractZoomableScreen {
             public boolean keyDown(int keycode) {
                 switch (keycode) {
                     case (Input.Keys.ESCAPE):
-                        game.setScreen(new WorldEditorMenueScreen(game, world));
+                        game.setScreen(new WorldEditorMenuScreen(game, world));
                         break;
                 }
                 return super.keyDown(keycode);
