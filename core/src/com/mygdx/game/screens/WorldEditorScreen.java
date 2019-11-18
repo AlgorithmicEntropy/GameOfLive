@@ -60,7 +60,7 @@ public class WorldEditorScreen extends AbstractZoomableScreen {
         }
         int horizontalSpace = Gdx.graphics.getHeight() / height;
         for (int y = 0; y < width; y++) {
-            game.shapeRenderer.line(y * verticalSpace, 0, y * verticalSpace, Gdx.graphics.getHeight());
+            game.shapeRenderer.line(y * horizontalSpace, 0, y * horizontalSpace, Gdx.graphics.getHeight());
         }
         //end shape rendering
         game.shapeRenderer.end();
