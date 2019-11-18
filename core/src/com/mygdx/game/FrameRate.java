@@ -14,23 +14,16 @@ public class FrameRate implements Disposable{
     private float frameRate;
     private BitmapFont font;
     private SpriteBatch batch;
-    private OrthographicCamera cam;
-
 
     public FrameRate(GameOfLive game) {
         lastTimeCounted = TimeUtils.millis();
         sinceChange = 0;
         frameRate = Gdx.graphics.getFramesPerSecond();
         font = game.font;
-        batch = game.batch;
-        cam = game.cam;
+        batch = game.hudBatch;
     }
 
     public void resize(int screenWidth, int screenHeight) {
-        cam = new OrthographicCamera(screenWidth, screenHeight);
-        cam.translate(screenWidth / 2f, screenHeight / 2f);
-        cam.update();
-        batch.setProjectionMatrix(cam.combined);
     }
 
     public void update() {

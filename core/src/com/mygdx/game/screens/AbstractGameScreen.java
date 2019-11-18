@@ -2,6 +2,7 @@ package com.mygdx.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -12,6 +13,7 @@ public abstract class AbstractGameScreen extends ScreenAdapter {
 
     private GameOfLive game;
     private FrameRate frameRate;
+    protected InputMultiplexer inputMultiplexer = new InputMultiplexer();
 
     AbstractGameScreen(GameOfLive game) {
         this.game = game;
@@ -50,11 +52,13 @@ public abstract class AbstractGameScreen extends ScreenAdapter {
     @Override
     public void show() {
         super.show();
+        Gdx.input.setInputProcessor(inputMultiplexer);
     }
 
     @Override
     public void hide() {
         super.hide();
+        Gdx.input.setInputProcessor(null);
     }
 
     @Override

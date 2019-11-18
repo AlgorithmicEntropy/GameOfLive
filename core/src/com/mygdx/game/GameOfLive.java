@@ -14,6 +14,7 @@ import com.mygdx.game.util.Settings;
 
 public class GameOfLive extends Game {
 	public SpriteBatch batch;
+	public SpriteBatch hudBatch;
 	public ShapeRenderer shapeRenderer;
 	public BitmapFont font;
 	public Skin skin;
@@ -23,7 +24,9 @@ public class GameOfLive extends Game {
 	
 	@Override
 	public void create () {
+
 		batch = new SpriteBatch();
+		hudBatch = new SpriteBatch();
 		shapeRenderer = new ShapeRenderer();
         font = new BitmapFont();
         skin = new Skin(Gdx.files.internal("cloud-form-ui.json"));
@@ -37,6 +40,7 @@ public class GameOfLive extends Game {
         viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), cam);
 
         setScreen(new MenuScreen(this));
+
 	}
 	
 	@Override

@@ -86,6 +86,7 @@ public class WorldEditorMenuScreen extends AbstractGameScreen {
         });
 
         //set UI Layout Table
+        //TODO add import subfigure button
         table.align(Align.top);
         table.padTop(Settings.getUiTopPadding());
         table.add(titelLabel).spaceBottom(50);

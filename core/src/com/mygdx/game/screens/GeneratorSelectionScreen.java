@@ -20,6 +20,8 @@ public class GeneratorSelectionScreen extends AbstractGameScreen {
     private static final String CENTER_SQUARE_GEN_BUTTON_TEXT = "Square Generator";
     private static final String DEFAULT_GRID_DIMENSION = "1000";
 
+    private boolean isDialogOpen = false;
+
     private GameOfLive game;
     private Stage stage;
     private Table table;
@@ -77,10 +79,10 @@ public class GeneratorSelectionScreen extends AbstractGameScreen {
 
         //add elements to table
         table.align(Align.top);
-        table.columnDefaults(2);
+        table.columnDefaults(3);
         table.padTop(Settings.getUiTopPadding());
         //TODO proper banner screen label
-        table.add(topBanner).spaceBottom(100).colspan(2);
+        table.add(topBanner).spaceBottom(100).colspan(3);
         table.row();
         table.add(widthLabel).spaceBottom(20);
         table.add(widthField).spaceBottom(20);
@@ -89,9 +91,8 @@ public class GeneratorSelectionScreen extends AbstractGameScreen {
         table.add(heightField);
         table.row();
         table.add(randomGeneratorButton).spaceTop(100);
-        table.add(centeredSquareGenButton).spaceTop(100);
-        table.row();
-        table.add(customWorldGenButton).spaceTop(20).colspan(2);
+        table.add(customWorldGenButton).spaceTop(100);
+        table.add(centeredSquareGenButton).spaceTop(100).align(Align.bottom);
         table.setFillParent(true);
         //add to stage
         stage.addActor(table);
@@ -179,14 +180,19 @@ public class GeneratorSelectionScreen extends AbstractGameScreen {
                     dialog.show(stage);
                     Gdx.app.log("Exception", "parsing input");
                 }
+                isDialogOpen = false;
             }
 
             @Override
             public void canceled() {
-
+                isDialogOpen = false;
             }
         };
-        Gdx.input.getTextInput(listener, "Living Cells Percentage", "Enter percent of living cells", "");
+
+        if (!isDialogOpen) {
+            isDialogOpen = true;
+            Gdx.input.getTextInput(listener, "Living Cells Percentage", "Enter percent of living cells", "");
+                    }
     }
 
     private void squareGenerator() {
@@ -224,15 +230,20 @@ public class GeneratorSelectionScreen extends AbstractGameScreen {
                     dialog.button("OK");
                     dialog.show(stage);
                     Gdx.app.log("Exception", "illegal input parameters");
+                } finally {
+                    isDialogOpen = false;
                 }
             }
 
             @Override
             public void canceled() {
-
+                isDialogOpen = false;
             }
         };
-        Gdx.input.getTextInput(listener, "Square Radius", "Enter radius", "");
+        if (!isDialogOpen) {
+            isDialogOpen = true;
+            Gdx.input.getTextInput(listener, "Square Radius", "Enter radius", "");
+        }
     }
 
     private void customGeneration() {

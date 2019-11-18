@@ -8,7 +8,7 @@ import com.mygdx.game.GameOfLive;
 import com.mygdx.game.LiveEngine;
 import com.mygdx.game.util.Counter;
 
-public class SimulationScreen extends AbstractGameScreen {
+public class SimulationScreen extends AbstractZoomableScreen {
 
     private static final float DEFAULT_CYCLE_DURATION = 0.1f;
     private static final float MIN_CYCLE_DURATION = 0.0f;
@@ -34,8 +34,8 @@ public class SimulationScreen extends AbstractGameScreen {
         this.simulationSourceScreen = simulationSourceScreen;
         //set simulation speed
         nextStateCalcCounter = new Counter(DEFAULT_CYCLE_DURATION);
-        //pause on load
-        isPaused = true;
+        //pause on load ?
+        isPaused = false;
     }
 
     @Override
@@ -72,16 +72,16 @@ public class SimulationScreen extends AbstractGameScreen {
         //end shape rendering
         game.shapeRenderer.end();
         //begin batch drawing
-        game.batch.begin();
+        game.hudBatch.begin();
         //draw paused text
         if (isPaused) {
-            game.font.draw(game.batch, "SPACE to start simulation", PAUSE_TEXT_X, PAUSE_TEXT_Y);
+            game.font.draw(game.hudBatch, "SPACE to start simulation", PAUSE_TEXT_X, PAUSE_TEXT_Y);
         }
         //draw simulation speed
-        game.font.draw(game.batch, "speed: " + nextStateCalcCounter.getDuration() + " s", SIMULATION_SPEED_X, SIMULATION_SPEED_Y);
-        game.font.draw(game.batch, "cycle: " + engine.getCycleCounter(), SIMULATION_COUNTER_X, SIMULATION_COUNTER_Y);
+        game.font.draw(game.hudBatch, "speed: " + nextStateCalcCounter.getDuration() + " s", SIMULATION_SPEED_X, SIMULATION_SPEED_Y);
+        game.font.draw(game.hudBatch, "cycle: " + engine.getCycleCounter(), SIMULATION_COUNTER_X, SIMULATION_COUNTER_Y);
         //end batch drawing
-        game.batch.end();
+        game.hudBatch.end();
         //fps
         super.drawFPS();
     }
@@ -96,7 +96,7 @@ public class SimulationScreen extends AbstractGameScreen {
     @Override
     public void show() {
         super.show();
-        Gdx.input.setInputProcessor(new InputAdapter() {
+        InputAdapter inputAdapter = new InputAdapter() {
             @Override
             public boolean keyDown(int keycode) {
                 switch (keycode) {
@@ -116,7 +116,9 @@ public class SimulationScreen extends AbstractGameScreen {
 
                 return super.keyDown(keycode);
             }
-        });
+        };
+        //set input processor
+        super.inputMultiplexer.addProcessor(inputAdapter);
     }
 
     @Override

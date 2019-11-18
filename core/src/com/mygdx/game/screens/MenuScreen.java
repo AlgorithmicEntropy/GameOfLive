@@ -75,7 +75,7 @@ public class MenuScreen extends AbstractGameScreen {
         table.row();
         table.add(createNewButton).padBottom(20).colspan(2);
         table.row();
-        table.add(loadButton).padBottom(20);
+        table.add(loadButton).padBottom(20).padRight(Settings.getUiButtonSidePadding());
         table.add(loadAndEditButton).padBottom(20);
         table.row();
         table.add(settingsButton).colspan(2);
