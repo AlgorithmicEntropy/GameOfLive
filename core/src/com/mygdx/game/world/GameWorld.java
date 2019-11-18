@@ -2,6 +2,7 @@ package com.mygdx.game.world;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.Json;
 import com.mygdx.game.util.Settings;
 
 import java.io.FileNotFoundException;
@@ -18,6 +19,11 @@ public class GameWorld {
         this.height = height;
         this.width = width;
         liveArray = new byte[width][height];
+    }
+
+    //json deserialization constructor
+    private GameWorld() {
+
     }
 
     public GameWorld(int width, int height) {
@@ -72,6 +78,16 @@ public class GameWorld {
     }
 
     private String serializeWorld() {
+        //json
+        Json json = new Json();
+        String worldJson = json.toJson(this);
+
+        if (Settings.getInstance().isDebugEnabled())
+            System.out.println(json.prettyPrint(worldJson));
+
+        return worldJson;
+
+        /*
         StringBuilder stringBuilder = new StringBuilder();
         //add header
         stringBuilder.append(name);
@@ -88,9 +104,14 @@ public class GameWorld {
             }
         }
         return stringBuilder.toString();
+        */
     }
 
     private static GameWorld deserializeWorld(String worldString) {
+        Json json = new Json();
+        return json.fromJson(GameWorld.class, worldString);
+
+        /*
         String[] parts = worldString.split(":");
         String name = parts[0];
         int width = Integer.parseInt(parts[1]);
@@ -108,6 +129,7 @@ public class GameWorld {
         }
         world.setLiveArray(array);
         return  world;
+        */
     }
 
     public static GameWorld loadWorldFromSaves(String name) throws FileNotFoundException {

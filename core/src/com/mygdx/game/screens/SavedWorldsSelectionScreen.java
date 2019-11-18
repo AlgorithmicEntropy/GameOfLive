@@ -39,7 +39,7 @@ public class SavedWorldsSelectionScreen extends AbstractGameScreen {
             try {
                 GameWorld world = GameWorld.loadWorldFromSaves(file.name());
                 gameWorldDictionary.put(world.getName(), world);
-            } catch (FileNotFoundException ex) {
+            } catch (Exception ex) {
                 Gdx.app.log("Exception", ex.getMessage());
             }
         }
