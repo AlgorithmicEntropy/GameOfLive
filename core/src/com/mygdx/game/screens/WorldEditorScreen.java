@@ -54,13 +54,18 @@ public class WorldEditorScreen extends AbstractZoomableScreen {
         game.shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         game.shapeRenderer.setColor(0, 0, 0,1);
         //render grid lines
-        int verticalSpace = Gdx.graphics.getWidth() / width;
+        int worldHeight = (int)game.cam.viewportHeight;
+        int worldWidth = (int)game.cam.viewportWidth;
+
+        int verticalSpace = (worldWidth / width);
+        int horizontalSpace = worldHeight / height;
+
         for (int x = 0; x < width; x++) {
-            game.shapeRenderer.line(0, x * verticalSpace, Gdx.graphics.getWidth(), x * verticalSpace);
+            game.shapeRenderer.line(0, x * horizontalSpace , worldWidth, x * horizontalSpace);
         }
-        int horizontalSpace = Gdx.graphics.getHeight() / height;
+
         for (int y = 0; y < width; y++) {
-            game.shapeRenderer.line(y * horizontalSpace, 0, y * horizontalSpace, Gdx.graphics.getHeight());
+            game.shapeRenderer.line(y * verticalSpace, 0, y * verticalSpace, worldHeight);
         }
         //end shape rendering
         game.shapeRenderer.end();

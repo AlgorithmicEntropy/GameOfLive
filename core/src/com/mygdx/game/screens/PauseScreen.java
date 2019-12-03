@@ -101,8 +101,6 @@ public class PauseScreen extends AbstractGameScreen {
     @Override
     public void resize(int width, int height) {
         super.resize(width, height);
-        game.viewport.update(width, height);
-        game.cam.update();
     }
 
     @Override

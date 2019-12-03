@@ -1,9 +1,11 @@
 package com.mygdx.game.screens;
 
-import com.badlogic.gdx.*;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.GL20;
 import com.mygdx.game.GameOfLive;
 import com.mygdx.game.LiveEngine;
 import com.mygdx.game.util.Counter;
@@ -89,8 +91,6 @@ public class SimulationScreen extends AbstractZoomableScreen {
     @Override
     public void resize(int width, int height) {
         super.resize(width, height);
-        game.viewport.update(width, height);
-        game.cam.update();
     }
 
     @Override

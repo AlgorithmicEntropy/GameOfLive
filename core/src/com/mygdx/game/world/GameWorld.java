@@ -79,6 +79,7 @@ public class GameWorld {
 
     private String serializeWorld() {
         //json
+        //TODO add custom world array serialisation and save compression (e.g. 10001 == 1301)
         Json json = new Json();
         String worldJson = json.toJson(this);
 
@@ -86,50 +87,11 @@ public class GameWorld {
             System.out.println(json.prettyPrint(worldJson));
 
         return worldJson;
-
-        /*
-        StringBuilder stringBuilder = new StringBuilder();
-        //add header
-        stringBuilder.append(name);
-        stringBuilder.append(':');
-        //dimensions
-        stringBuilder.append(width);
-        stringBuilder.append(':');
-        stringBuilder.append(height);
-        stringBuilder.append(':');
-        //append array serialisation
-        for (int x = 0; x < width;x++) {
-            for (int y = 0; y < height; y++) {
-                stringBuilder.append(liveArray[x][y]);
-            }
-        }
-        return stringBuilder.toString();
-        */
     }
 
     private static GameWorld deserializeWorld(String worldString) {
         Json json = new Json();
         return json.fromJson(GameWorld.class, worldString);
-
-        /*
-        String[] parts = worldString.split(":");
-        String name = parts[0];
-        int width = Integer.parseInt(parts[1]);
-        int height = Integer.parseInt(parts[2]);
-        GameWorld world = new GameWorld(width, height, name);
-        byte[][] array = new byte[width][height];
-        char[] data = parts[3].toCharArray();
-
-        int i = 0;
-        for (int x = 0; x < width;x++) {
-            for (int y = 0; y < height; y++) {
-                array[x][y] = Byte.parseByte(""+data[i]);
-                i++;
-            }
-        }
-        world.setLiveArray(array);
-        return  world;
-        */
     }
 
     public static GameWorld loadWorldFromSaves(String name) throws FileNotFoundException {

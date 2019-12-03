@@ -23,9 +23,8 @@ public abstract class AbstractGameScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         //update cam
-        game.cam.update();
-        game.batch.setProjectionMatrix(game.cam.combined);
-        game.shapeRenderer.setProjectionMatrix(game.cam.combined);
+        game.batch.setTransformMatrix(game.cam.view);
+        game.batch.setProjectionMatrix(game.cam.projection);
         //clear screen and set color
         Color color = game.settings.getBackgroundColor();
         Gdx.gl.glClearColor(color.r, color.g, color.b, color.a);
@@ -47,6 +46,11 @@ public abstract class AbstractGameScreen extends ScreenAdapter {
         game.batch.setProjectionMatrix(game.cam.combined);
         */
         //TODO fix resize
+        //game.cam.viewportWidth = width;
+        //game.cam.viewportHeight = height;
+        game.viewport.update(width, height);
+        game.cam.position.set(game.cam.viewportWidth / 2f, game.cam.viewportHeight / 2f, 0);
+        game.cam.update();
     }
 
     @Override

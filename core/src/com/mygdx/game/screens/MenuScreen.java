@@ -32,7 +32,7 @@ public class MenuScreen extends AbstractGameScreen {
         //set fields
         this.game = game;
         table = new Table();
-        stage = new Stage();
+        stage = new Stage(game.viewport);
         //load textures
         startNewSimulation = new Texture("PlayButton.png");
         //calculate texture coordinates
@@ -117,8 +117,6 @@ public class MenuScreen extends AbstractGameScreen {
     @Override
     public void resize(int width, int height) {
         super.resize(width, height);
-        game.viewport.update(width, height);
-        game.cam.update();
     }
 
     @Override

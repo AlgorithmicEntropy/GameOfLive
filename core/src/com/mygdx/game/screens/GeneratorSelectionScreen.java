@@ -42,7 +42,7 @@ public class GeneratorSelectionScreen extends AbstractGameScreen {
         super(game);
 
         this.game = game;
-        stage = new Stage();
+        stage = new Stage(game.viewport);
         table = new Table();
 
         //create buttons
