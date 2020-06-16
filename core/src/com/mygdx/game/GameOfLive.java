@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.game.screens.MenuScreen;
 import com.mygdx.game.util.Settings;
 
@@ -18,12 +18,11 @@ public class GameOfLive extends Game {
 	public BitmapFont font;
 	public Skin skin;
 	public OrthographicCamera cam;
-	public ExtendViewport viewport;
+	public FitViewport viewport;
 	public Settings settings;
 	
 	@Override
 	public void create () {
-
 		batch = new SpriteBatch();
 		hudBatch = new SpriteBatch();
 		shapeRenderer = new ShapeRenderer();
@@ -31,12 +30,12 @@ public class GameOfLive extends Game {
         skin = new Skin(Gdx.files.internal("cloud-form-ui.json"));
         settings = Settings.getInstance();
 
-        cam = new OrthographicCamera(1000, 1000);
+        cam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         cam.position.set(cam.viewportWidth / 2f, cam.viewportHeight / 2f, 0);
         cam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         cam.update();
 
-        viewport = new ExtendViewport(1000, 1000, cam);
+        viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), cam);
 
         setScreen(new MenuScreen(this));
 

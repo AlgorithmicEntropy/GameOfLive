@@ -70,8 +70,8 @@ public class GeneratorSelectionScreen extends AbstractGameScreen {
             }
         });
 
-        widthField = new TextField(DEFAULT_GRID_DIMENSION, game.skin);
-        heightField = new TextField(DEFAULT_GRID_DIMENSION, game.skin);
+        widthField = new TextField(Integer.toString((int)game.cam.viewportWidth), game.skin);
+        heightField = new TextField(Integer.toString((int)game.cam.viewportHeight), game.skin);
         widthLabel = new Label("World Width", game.skin);
         heightLabel = new Label("World Height", game.skin);
         topBanner = new Label("Choose a generator", game.skin);

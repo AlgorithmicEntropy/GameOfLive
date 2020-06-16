@@ -36,7 +36,7 @@ public class WorldEditorScreen extends AbstractZoomableScreen {
         //calculate cell dimensions
         int squareHeight = Gdx.graphics.getHeight() / height;
         int squareWidth = Gdx.graphics.getWidth() / width;
-        squareSize = squareHeight;
+        squareSize = Math.min(squareHeight, squareWidth);
         //draw living cells to screen
         game.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         game.shapeRenderer.setColor(game.settings.getTileColor());
@@ -45,7 +45,7 @@ public class WorldEditorScreen extends AbstractZoomableScreen {
             for (int y = 0; y < height; y++)
             {
                 if (worldArray[x][y] == 1)
-                    game.shapeRenderer.rect(x*squareWidth, y*squareHeight, squareWidth, squareHeight);
+                    game.shapeRenderer.rect(x*squareSize, y*squareSize, squareSize, squareSize);
             }
         }
         //end shape rendering
@@ -59,17 +59,18 @@ public class WorldEditorScreen extends AbstractZoomableScreen {
 
         int verticalSpace = (worldWidth / width);
         int horizontalSpace = worldHeight / height;
+        int squaredSpace = Math.min(verticalSpace, horizontalSpace);
 
         for (int x = 0; x < width; x++) {
-            game.shapeRenderer.line(0, x * horizontalSpace , worldWidth, x * horizontalSpace);
+            game.shapeRenderer.line(0, x * squaredSpace , squaredSpace*width, x * squaredSpace);
         }
 
-        for (int y = 0; y < width; y++) {
-            game.shapeRenderer.line(y * verticalSpace, 0, y * verticalSpace, worldHeight);
+        for (int y = 0; y < width+1; y++) {
+            game.shapeRenderer.line(y * squaredSpace, 0, y * squaredSpace, squaredSpace*height);
         }
         //end shape rendering
         game.shapeRenderer.end();
-        //click handeling
+        //click handling
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
             vector3.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             game.cam.unproject(vector3);

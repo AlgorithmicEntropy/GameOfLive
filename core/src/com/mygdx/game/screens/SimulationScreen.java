@@ -29,7 +29,7 @@ public class SimulationScreen extends AbstractZoomableScreen {
     private Counter nextStateCalcCounter;
     private boolean isPaused;
 
-    public SimulationScreen(GameOfLive game, ScreenAdapter simulationSourceScreen) {
+    SimulationScreen(GameOfLive game, ScreenAdapter simulationSourceScreen) {
         super(game);
 
         this.game = game;
@@ -59,6 +59,7 @@ public class SimulationScreen extends AbstractZoomableScreen {
         //calculate cell dimensions
         int squareHeight = Gdx.graphics.getHeight() / height;
         int squareWidth = Gdx.graphics.getWidth() / width;
+        int squareSize = Math.min(squareHeight, squareWidth);
         //draw living cells to screen
         game.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         Color color = game.settings.getTileColor();
@@ -68,7 +69,7 @@ public class SimulationScreen extends AbstractZoomableScreen {
             for (int y = 0; y < height; y++)
             {
                 if (array[x][y] == 1)
-                    game.shapeRenderer.rect(x*squareWidth, y*squareHeight, squareWidth, squareHeight);
+                    game.shapeRenderer.rect(x*squareSize, y*squareSize, squareSize, squareSize);
             }
         }
         //end shape rendering
