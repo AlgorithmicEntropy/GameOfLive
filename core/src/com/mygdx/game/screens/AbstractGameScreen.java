@@ -15,7 +15,7 @@ public abstract class AbstractGameScreen extends ScreenAdapter {
     private FrameRate frameRate;
     protected InputMultiplexer inputMultiplexer = new InputMultiplexer();
 
-    AbstractGameScreen(GameOfLive game) {
+    public AbstractGameScreen(GameOfLive game) {
         this.game = game;
         this.frameRate = new FrameRate(game);
     }
@@ -80,7 +80,7 @@ public abstract class AbstractGameScreen extends ScreenAdapter {
         super.dispose();
     }
 
-    void drawFPS() {
+    public void drawFPS() {
         //draw and update frameRate
         frameRate.update();
         frameRate.render();

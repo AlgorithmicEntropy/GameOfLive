@@ -1,6 +1,9 @@
 package com.mygdx.game.screens;
 
-import com.badlogic.gdx.*;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -8,10 +11,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.mygdx.game.GameOfLive;
 import com.mygdx.game.LiveEngine;
-import com.mygdx.game.generators.CenteredSquareLiveGenerator;
-import com.mygdx.game.generators.RandomSpreadLiveGenerator;
+import com.mygdx.game.screens.generatorScreens.RandomGenScreen;
+import com.mygdx.game.screens.generatorScreens.SquareGenScreen;
 import com.mygdx.game.util.Settings;
 import com.mygdx.game.world.GameWorld;
+
+import static java.lang.Integer.parseInt;
 
 public class GeneratorSelectionScreen extends AbstractGameScreen {
 
@@ -50,7 +55,8 @@ public class GeneratorSelectionScreen extends AbstractGameScreen {
         randomGeneratorButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                randomGeneration();
+                int[] dimensions = parseWorldDimensions();
+                game.setScreen(new RandomGenScreen(game, dimensions[0], dimensions[1]));
             }
         });
 
@@ -58,7 +64,8 @@ public class GeneratorSelectionScreen extends AbstractGameScreen {
         centeredSquareGenButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                squareGenerator();
+                int[] dimensions = parseWorldDimensions();
+                game.setScreen(new SquareGenScreen(game, dimensions[0], dimensions[1]));
             }
         });
 
@@ -156,100 +163,10 @@ public class GeneratorSelectionScreen extends AbstractGameScreen {
         super.dispose();
     }
 
-    private void randomGeneration() {
-        Input.TextInputListener listener = new Input.TextInputListener() {
-            @Override
-            public void input(String text) {
-                try {
-                    int width = Integer.parseInt(widthField.getText());
-                    int height = Integer.parseInt(heightField.getText());
-                    int percentage = Integer.parseInt(text);
-
-                    RandomSpreadLiveGenerator generator = new RandomSpreadLiveGenerator(width,height,percentage);
-                    engine.generate(generator);
-                    //post runnable to draw on correct thread
-                    Gdx.app.postRunnable(new Runnable() {
-                        @Override
-                        public void run() {
-                            game.setScreen(new SimulationScreen(game, null));
-                        }
-                    });
-                } catch (NumberFormatException ex) {
-                    Dialog dialog = new Dialog("Invalid input", game.skin);
-                    dialog.button("OK");
-                    dialog.show(stage);
-                    Gdx.app.log("Exception", "parsing input");
-                }
-                isDialogOpen = false;
-            }
-
-            @Override
-            public void canceled() {
-                isDialogOpen = false;
-            }
-        };
-
-        if (!isDialogOpen) {
-            isDialogOpen = true;
-            Gdx.input.getTextInput(listener, "Living Cells Percentage", "Enter percent of living cells", "");
-                    }
-    }
-
-    private void squareGenerator() {
-        Input.TextInputListener listener = new Input.TextInputListener() {
-            @Override
-            public void input(String text) {
-                try {
-                    int width = Integer.parseInt(widthField.getText());
-                    int height = Integer.parseInt(heightField.getText());
-                    int radius = Integer.parseInt(text);
-
-                    if (width > Gdx.graphics.getWidth() ||
-                        height > Gdx.graphics.getHeight() ||
-                        radius > width || radius > height
-                    ) {
-                        throw new IllegalArgumentException();
-                    }
-
-                    CenteredSquareLiveGenerator generator = new CenteredSquareLiveGenerator(width, height, radius);
-                    engine.generate(generator);
-                    //post runnable to draw on correct thread
-                    Gdx.app.postRunnable(new Runnable() {
-                        @Override
-                        public void run() {
-                            game.setScreen(new SimulationScreen(game, null));
-                        }
-                    });
-                } catch (NumberFormatException ex) {
-                    Dialog dialog = new Dialog("Invalid input", game.skin);
-                    dialog.button("OK");
-                    dialog.show(stage);
-                    Gdx.app.log("Exception", "parsing input");
-                } catch (IllegalArgumentException ex) {
-                    Dialog dialog = new Dialog("Invalid input", game.skin);
-                    dialog.button("OK");
-                    dialog.show(stage);
-                    Gdx.app.log("Exception", "illegal input parameters");
-                } finally {
-                    isDialogOpen = false;
-                }
-            }
-
-            @Override
-            public void canceled() {
-                isDialogOpen = false;
-            }
-        };
-        if (!isDialogOpen) {
-            isDialogOpen = true;
-            Gdx.input.getTextInput(listener, "Square Radius", "Enter radius", "");
-        }
-    }
-
     private void customGeneration() {
         try {
-            final int width = Integer.parseInt(widthField.getText());
-            final int height = Integer.parseInt(heightField.getText());
+            final int width = parseInt(widthField.getText());
+            final int height = parseInt(heightField.getText());
 
             //post runnable to draw on correct thread
             Gdx.app.postRunnable(new Runnable() {
@@ -265,4 +182,12 @@ public class GeneratorSelectionScreen extends AbstractGameScreen {
             Gdx.app.log("Exception", "parsing input");
         }
     }
+
+    private int[] parseWorldDimensions() {
+        int[] dimensions = new int[2];
+        dimensions[0] = parseInt(heightField.getText());
+        dimensions[1] = parseInt(widthField.getText());
+        return dimensions;
+    }
+
 }

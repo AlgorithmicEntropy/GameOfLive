@@ -4,17 +4,17 @@ public class CenteredSquareLiveGenerator extends AbstractLiveGenerator{
 
     private static final String NAME = "Square Generator";
 
-    private int width, height;
-    private int radius;
+    private int worldWidth, worldHeight, rectWidth, rectHeight;
 
-    public CenteredSquareLiveGenerator(int width, int height, int radius) {
+    public CenteredSquareLiveGenerator(int worldWidth, int worldHeight, int rectWidth, int rectHeight) {
 
-        if (radius > height || radius > width) {
-            throw new IllegalArgumentException("radius can not be bigger than width or hight");
+        if (rectHeight > worldHeight || rectWidth > worldWidth) {
+            throw new IllegalArgumentException("radius can not be bigger than worldWidth or worldHeight");
         }
-        this.radius = radius;
-        this.height = height;
-        this.width = width;
+        this.worldHeight = worldHeight;
+        this.worldWidth = worldWidth;
+        this.rectHeight = rectHeight;
+        this.rectWidth = rectWidth;
     }
 
     @Override
@@ -24,10 +24,14 @@ public class CenteredSquareLiveGenerator extends AbstractLiveGenerator{
 
     @Override
     public byte[][] generateLiveArray() {
-        byte[][] array = new byte[width][height];
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                if (x < radius/2+width/2 && x > (width-radius)/2 && y > (height-radius)/2 && y < radius/2+height/2) {
+        byte[][] array = new byte[worldWidth][worldHeight];
+        for (int x = 0; x < worldWidth; x++) {
+            for (int y = 0; y < worldHeight; y++) {
+                if (x < rectWidth/2+ worldWidth / 2 &&
+                        x > (worldWidth - rectWidth)/2 &&
+                        y > (worldHeight - rectHeight)/2 &&
+                        y < rectHeight/2+ worldHeight /2) {
+
                     array[x][y] = 1;
                 } else {
                     array[x][y] = 0;

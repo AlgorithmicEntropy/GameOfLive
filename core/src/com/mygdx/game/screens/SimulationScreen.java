@@ -29,7 +29,7 @@ public class SimulationScreen extends AbstractZoomableScreen {
     private Counter nextStateCalcCounter;
     private boolean isPaused;
 
-    SimulationScreen(GameOfLive game, ScreenAdapter simulationSourceScreen) {
+    public SimulationScreen(GameOfLive game, ScreenAdapter simulationSourceScreen) {
         super(game);
 
         this.game = game;
