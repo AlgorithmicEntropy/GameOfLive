@@ -1,2 +1,2 @@
 # GameOfLive
-A Java Implementation of Conway's Game of Life
+A Java Implementation of Conway's Game of Life using LibGDX
