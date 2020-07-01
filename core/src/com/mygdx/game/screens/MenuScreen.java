@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.mygdx.game.GameOfLive;
+import com.mygdx.game.util.Constants;
 import com.mygdx.game.util.Settings;
 
 public class MenuScreen extends AbstractGameScreen {
@@ -20,11 +21,6 @@ public class MenuScreen extends AbstractGameScreen {
     private GameOfLive game;
     private Table table;
     private Stage stage;
-    private Texture startNewSimulation;
-    private static final float START_NEW_Y = Gdx.graphics.getHeight() * 0.8f;
-    private float startNewX;
-    //temp screen clicked vector
-    private Vector3 clickCords = new Vector3();
 
     public MenuScreen(GameOfLive game)
     {
@@ -33,10 +29,6 @@ public class MenuScreen extends AbstractGameScreen {
         this.game = game;
         table = new Table();
         stage = new Stage(game.viewport);
-        //load textures
-        startNewSimulation = new Texture("PlayButton.png");
-        //calculate texture coordinates
-        startNewX = Gdx.graphics.getWidth() * 0.5f - startNewSimulation.getWidth();
         //init ui elements
         TextButton createNewButton = new TextButton("Create New", game.skin);
         createNewButton.addListener(new ChangeListener() {
@@ -70,12 +62,12 @@ public class MenuScreen extends AbstractGameScreen {
         //table layout
         table.columnDefaults(2);
         table.align(Align.center);
-        table.padTop(Settings.getUiTopPadding());
+        table.padTop(Constants.UI_TOP_PADDING);
         table.padBottom(100); // banner
         table.row();
         table.add(createNewButton).padBottom(20).colspan(2);
         table.row();
-        table.add(loadButton).padBottom(20).padRight(Settings.getUiButtonSidePadding());
+        table.add(loadButton).padBottom(20).padRight(Constants.UI_BUTTON_SIDE_PADDING);
         table.add(loadAndEditButton).padBottom(20);
         table.row();
         table.add(settingsButton).colspan(2);
@@ -89,29 +81,12 @@ public class MenuScreen extends AbstractGameScreen {
     public void render(float delta) {
         //super
         super.render(delta);
-        //TODO add settings button
-        //draw
-        game.batch.begin();
-        game.batch.draw(startNewSimulation, startNewX, START_NEW_Y );
-        game.batch.end();
 
         //debug info
         table.setDebug(game.settings.isDebugEnabled());
         //stage
         stage.draw();
         stage.act();
-
-        //check button clicked
-        if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-            clickCords.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-            game.cam.unproject(clickCords);
-            int xClicked = (int) clickCords.x;
-            int yClicked = (int) clickCords.y;
-            //System.out.println(xClicked + "         " + yClicked);
-            if (xClicked > startNewX && xClicked < startNewX + startNewSimulation.getWidth() && yClicked > START_NEW_Y && yClicked < START_NEW_Y + startNewSimulation.getHeight()) {
-                game.setScreen(new GeneratorSelectionScreen(game));
-            }
-        }
     }
 
     @Override
@@ -122,7 +97,6 @@ public class MenuScreen extends AbstractGameScreen {
     @Override
     public void show() {
         super.show();
-        InputMultiplexer inputMultiplexer = new InputMultiplexer();
 
         InputAdapter inputAdapter = new InputAdapter() {
             @Override
@@ -140,7 +114,6 @@ public class MenuScreen extends AbstractGameScreen {
 
         inputMultiplexer.addProcessor(inputAdapter);
         inputMultiplexer.addProcessor(stage);
-        Gdx.input.setInputProcessor(inputMultiplexer);
     }
 
     @Override

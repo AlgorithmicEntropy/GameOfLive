@@ -13,6 +13,7 @@ import com.mygdx.game.GameOfLive;
 import com.mygdx.game.LiveEngine;
 import com.mygdx.game.screens.generatorScreens.RandomGenScreen;
 import com.mygdx.game.screens.generatorScreens.SquareGenScreen;
+import com.mygdx.game.util.Constants;
 import com.mygdx.game.util.Settings;
 import com.mygdx.game.world.GameWorld;
 
@@ -87,7 +88,7 @@ public class GeneratorSelectionScreen extends AbstractGameScreen {
         //add elements to table
         table.align(Align.top);
         table.columnDefaults(3);
-        table.padTop(Settings.getUiTopPadding());
+        table.padTop(Constants.UI_TOP_PADDING);
         //TODO proper banner screen label
         table.add(topBanner).spaceBottom(100).colspan(3);
         table.row();

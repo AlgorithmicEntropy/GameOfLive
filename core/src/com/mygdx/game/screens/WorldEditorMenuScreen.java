@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.mygdx.game.GameOfLive;
 import com.mygdx.game.LiveEngine;
+import com.mygdx.game.util.Constants;
 import com.mygdx.game.util.Settings;
 import com.mygdx.game.world.GameWorld;
 
@@ -88,7 +89,7 @@ public class WorldEditorMenuScreen extends AbstractGameScreen {
         //set UI Layout Table
         //TODO add import subfigure button
         table.align(Align.top);
-        table.padTop(Settings.getUiTopPadding());
+        table.padTop(Constants.UI_TOP_PADDING);
         table.add(titelLabel).spaceBottom(50);
         table.row();
         table.add(runSimulationButton).spaceBottom(20);

@@ -9,6 +9,7 @@ import com.mygdx.game.GameOfLive;
 import com.mygdx.game.LiveEngine;
 import com.mygdx.game.generators.RandomSpreadLiveGenerator;
 import com.mygdx.game.screens.SimulationScreen;
+import com.mygdx.game.util.Constants;
 import com.mygdx.game.util.Settings;
 
 import static java.lang.Integer.parseInt;
@@ -32,7 +33,7 @@ public class RandomGenScreen extends AbstractGenScreen {
         //table layout
         table.columnDefaults(2);
         table.align(Align.top);
-        table.padTop(Settings.getUiTopPadding());
+        table.padTop(Constants.UI_TOP_PADDING);
         //TODO add banner/description
         table.add(fillLabel).padBottom(20);
         table.add(fillFactorField).padBottom(20);

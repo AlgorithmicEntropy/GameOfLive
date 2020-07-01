@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.mygdx.game.GameOfLive;
 import com.mygdx.game.LiveEngine;
+import com.mygdx.game.util.Constants;
 import com.mygdx.game.util.Settings;
 
 public class PauseScreen extends AbstractGameScreen {
@@ -74,7 +75,7 @@ public class PauseScreen extends AbstractGameScreen {
         });
 
         menueTable.align(Align.top);
-        menueTable.padTop(Settings.getUiTopPadding());
+        menueTable.padTop(Constants.UI_TOP_PADDING);
         menueTable.add(bannerLabel).spaceBottom(100);
         menueTable.row();
         menueTable.add(continueButton);
